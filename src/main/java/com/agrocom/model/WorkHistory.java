@@ -1,17 +1,20 @@
 package com.agrocom.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "work_history")
-public class WorkHistory {
+public class WorkHistory implements Serializable {
+
+    private static final long serialVersionUID = 42L;
 
     @Id
     @GeneratedValue(generator = "society_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "society_id_seq", sequenceName = "society_id_seq", allocationSize = 1)
     @Column(name = "work_his_id")
-    private Integer workHistoryId;
+    private Long workHistoryId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

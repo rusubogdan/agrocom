@@ -1,17 +1,20 @@
 package com.agrocom.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "society")
-public class Society {
+public class Society implements Serializable {
+
+    private static final long serialVersionUID = 42L;
 
     @Id
     @GeneratedValue(generator = "society_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "society_id_seq", sequenceName = "society_id_seq", allocationSize = 1)
     @Column(name = "society_id")
-    private Integer societyId;
+    private Long societyId;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")

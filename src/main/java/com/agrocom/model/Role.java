@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Table(name = "role")
 public class Role implements Serializable {
 
+    private static final long serialVersionUID = 42L;
+
     // ADMIN = Society administrator
     public static final Integer ROLE_ADMIN = 1;
     // MODERATOR = Society employees
@@ -17,16 +19,16 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "role_id")
-    private Integer roleId;
+    private Long roleId;
 
     @Column(name = "role")
     private String role;
 
-    public Integer getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 

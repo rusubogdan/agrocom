@@ -1,18 +1,22 @@
 package com.agrocom.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
 @Table(name = "\"user\"")
-public class User {
+public class User implements Serializable {
+
+    // yep, it's 42 :D
+    private static final long serialVersionUID = 42L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     // unidirectional relationship between user and role !
     // role is independent of user

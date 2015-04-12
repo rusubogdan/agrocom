@@ -1,16 +1,19 @@
 package com.agrocom.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "infield")
-public class Infield {
+public class Infield implements Serializable {
+
+    private static final long serialVersionUID = 42L;
 
     @Id
     @GeneratedValue(generator = "infield_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "infield_id_seq", sequenceName = "infield_id_seq", allocationSize = 1)
     @Column(name = "infield_id")
-    private Integer infieldId;
+    private Long infieldId;
 
     @ManyToOne
     @JoinColumn(name = "society_id")
