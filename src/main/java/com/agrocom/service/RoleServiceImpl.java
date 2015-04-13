@@ -1,7 +1,7 @@
 package com.agrocom.service;
 
-import com.scncm.dao.RoleDAO;
-import com.scncm.model.Role;
+import com.agrocom.dao.RoleDAO;
+import com.agrocom.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

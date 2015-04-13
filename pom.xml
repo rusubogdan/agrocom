@@ -8,6 +8,10 @@
     <artifactId>agrocom</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- this will instruct maven to update the lib folder under
+     the root of the web app lib folder with the jars from pom -->
+    <packaging>war</packaging>
+
     <properties>
         <hibernate.version>4.3.8.Final</hibernate.version>
         <slf4j.version>1.6.6</slf4j.version>
@@ -136,12 +140,8 @@
             <version>1.2</version>
         </dependency>
 
-        <!--postgresql dependencies-->
-        <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc3</version>
-        </dependency>
+
+
 
         <!--parse object to JSON format to client-->
         <dependency>
@@ -198,7 +198,45 @@
             <artifactId>sendgrid-java</artifactId>
             <version>2.0.0</version>
         </dependency>
+
+        <!--postgresql dependencies-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.2-1003-jdbc4</version>
+        </dependency>
     </dependencies>
 
+    <build>
+        <finalName>agrocom</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.heroku.sdk</groupId>
+                    <artifactId>heroku-maven-plugin</artifactId>
+                    <version>0.3.5</version>
+                    <configuration>
+                        <appName>agrocom</appName>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <source>${javaLanguage.version}</source>
+                        <target>${javaLanguage.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>

@@ -1,6 +1,5 @@
 package com.agrocom.service;
 
-import com.scncm.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,23 +21,23 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public UserDetails loadUserByUsername(String email) {
 
-//        User domainUser = userService.getUserByUsername(username);
+        com.agrocom.model.User domainUser = userService.getUserByEmail(email);
 
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-        // that freaking password may log you in :)
+//        that freaking password may log you in :)
 //        if (domainUser == null) {
 //            return new User("anonymousUser", "5h4g534vh4bvfhsevhgovyoy",
 //                    true, true, true, true, getAuthorities(Role.ROLE_RESTRICTED));
 //        }
 
         return new User(
-                domainUser.getUsername(),
+                domainUser.getEmail(),
                 domainUser.getPassword(),
                 enabled,
                 accountNonExpired,
@@ -48,11 +47,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities(Integer role) {
+    public Collection<? extends GrantedAuthority> getAuthorities(Long role) {
         return getGrantedAuthorities(getRoles(role));
     }
 
-    public List<String> getRoles(Integer role) {
+    public List<String> getRoles(Long role) {
 
         List<String> roles = new ArrayList<String>();
 
@@ -73,7 +72,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public static List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
         for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority(role));
