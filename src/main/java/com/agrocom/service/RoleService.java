@@ -1,6 +1,6 @@
 package com.agrocom.service;
 
-import com.scncm.model.Role;
+import com.agrocom.model.Role;
 
 public interface RoleService {
 

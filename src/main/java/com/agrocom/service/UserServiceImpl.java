@@ -1,10 +1,14 @@
-/*
 package com.agrocom.service;
 
 import com.agrocom.dao.UserDAO;
+import com.agrocom.helpers.AppUtil;
+import com.agrocom.helpers.Constants;
+import com.agrocom.helpers.SignUpForm;
 import com.agrocom.model.Role;
 import com.agrocom.model.User;
+
 import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,34 +30,27 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleService roleService;
 
-    public User getUser (Integer userId) {
+    public User getUser (Long userId) {
         return userDAO.getUser(userId);
     }
 
-    public User getUserByUsername (String username) {
-        return userDAO.getUserByUsername(username);
+    public User getUserByEmail (String email) {
+        return userDAO.getUserByEmail(email);
     }
 
-    public Integer getUserIdByUsername(String username){
-        return userDAO.getUserIdByUsername(username);
+    public User getUserByToken (String token) {
+        return userDAO.getUserByToken(token);
     }
-
-//    public User getUserByEmail (String email) {
-//        return userDAO.getUserByEmail(email);
-//    }
-
-//    public User getUserByToken (String token) {
-//        return userDAO.getUserByToken(token);
-//    }
 
     public Integer addUser (User user) {
-//        user.setToken(generateRandomToken());
+        user.setToken(generateRandomToken());
+        // todo set encrypted password
 //        user.setPassword();
-        // every new created user will have the role user
-//        RoleService role = roleService.getRole(Role.ROLE_USER);
-//        user.setRole(role);
-//
-//        user.setFacebook(false);
+//        every new created user will have the role user
+        // todo think this part
+
+        Role role = roleService.getRole(Role.ROLE_USER);
+        user.setRole(role);
 
         return userDAO.addUser(user);
     }
@@ -69,7 +66,6 @@ public class UserServiceImpl implements UserService {
     public User fromSignUpForm (SignUpForm signUpForm, Boolean thing) {
         User user = new User();
         user.setEmail(signUpForm.getEmail());
-        user.setUsername(signUpForm.getUsername());
         // todo encoded password
         user.setPassword(signUpForm.getPassword());
 
@@ -79,8 +75,8 @@ public class UserServiceImpl implements UserService {
     public Boolean sendSignUpEmail (User user) {
         String toEmail = user.getEmail();
         logger.info("Sending signUp email for " + toEmail);
-        String subject = "scienceMe account verification";
-        String htmlContent = "You are receiving this message because you tried to register to scienceMe " +
+        String subject = "Agrocom account verification";
+        String htmlContent = "You are receiving this message because you tried to register to Agrocom " +
                 "using this email address. " +
                 "<br/>To confirm please click <a href=\"" + signUpConfirmUrl + user.getToken() + "\">here</a>.";
         return mailService.sendMessage(toEmail, subject, htmlContent);
@@ -94,4 +90,3 @@ public class UserServiceImpl implements UserService {
         return token;
     }
 }
-*/

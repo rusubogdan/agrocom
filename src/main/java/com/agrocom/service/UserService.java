@@ -1,13 +1,11 @@
 package com.agrocom.service;
 
-import com.scncm.helpers.SignUpForm;
-import com.scncm.model.User;
+import com.agrocom.helpers.SignUpForm;
+import com.agrocom.model.User;
 
 public interface UserService {
 
-    User getUser(Integer userId);
-
-    User getUserByUsername(String login);
+    User getUser(Long userId);
 
     User getUserByEmail(String email);
 
@@ -19,9 +17,8 @@ public interface UserService {
 
     Boolean deleteUser(User user);
 
+    // additionally to UserDAO
     User fromSignUpForm(SignUpForm signUpForm, Boolean b);
-
-    Integer getUserIdByUsername(String username);
 
     Boolean sendSignUpEmail(User user);
 }

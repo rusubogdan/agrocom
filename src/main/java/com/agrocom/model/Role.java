@@ -9,6 +9,13 @@ public class Role implements Serializable {
 
     private static final long serialVersionUID = 42L;
 
+    // ADMIN = Society administrator
+    public static final Integer ROLE_ADMIN = 1;
+    // MODERATOR = Society employees
+    public static final Integer ROLE_MODERATOR = 2;
+    // USER = Society tenants
+    public static final Integer ROLE_USER = 3;
+
     @Id
     @GeneratedValue
     @Column(name = "role_id")

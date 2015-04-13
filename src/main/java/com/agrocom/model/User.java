@@ -61,6 +61,9 @@ public class User implements Serializable {
     @Column(name = "deleted_date")
     private Timestamp deletedDate;
 
+    @Column(name = "token")
+    private String token;
+
     public Long getUserId() {
         return userId;
     }
@@ -173,6 +176,14 @@ public class User implements Serializable {
         this.deletedDate = deletedDate;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -196,6 +207,7 @@ public class User implements Serializable {
         if (registerDate != null ? !registerDate.equals(user.registerDate) : user.registerDate != null) return false;
         if (role != null ? !role.equals(user.role) : user.role != null) return false;
         if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
+        if (token != null ? !token.equals(user.token) : user.token != null) return false;
 
         return true;
     }
@@ -216,6 +228,7 @@ public class User implements Serializable {
         result = 31 * result + (registerDate != null ? registerDate.hashCode() : 0);
         result = 31 * result + (isConfirmed != null ? isConfirmed.hashCode() : 0);
         result = 31 * result + (deletedDate != null ? deletedDate.hashCode() : 0);
+        result = 31 * result + (token != null ? token.hashCode() : 0);
         return result;
     }
 
@@ -236,6 +249,7 @@ public class User implements Serializable {
                 ", registerDate=" + registerDate +
                 ", isConfirmed=" + isConfirmed +
                 ", deletedDate=" + deletedDate +
+                ", token=" + token +
                 '}';
     }
 
@@ -244,7 +258,7 @@ public class User implements Serializable {
 
     public User(Role role, List<Society> ownedSocieties, Society employingSociety, List<Infield> infields,
                 String firstName, String lastName, String phone, String mobile, String email, String password,
-                Timestamp registerDate, Boolean isConfirmed, Timestamp deletedDate) {
+                Timestamp registerDate, Boolean isConfirmed, Timestamp deletedDate, String token) {
         this.role = role;
         this.ownedSocieties = ownedSocieties;
         this.employingSociety = employingSociety;
@@ -258,5 +272,7 @@ public class User implements Serializable {
         this.registerDate = registerDate;
         this.isConfirmed = isConfirmed;
         this.deletedDate = deletedDate;
+        this.token = token;
     }
+
 }

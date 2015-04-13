@@ -1,12 +1,15 @@
 package com.agrocom.dao;
 
-import com.scncm.model.User;
+import com.agrocom.model.User;
+
 import org.hibernate.Query;
 import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,51 +28,16 @@ public class UserDAOImpl implements UserDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public User getUser(Integer userId) {
-        // todo load auxiliary data
+    public User getUser(Long userId) {
         return (User) getCurrentSession().load(User.class, userId);
     }
 
-    public User getUserByUsername(String username) {
-        List<User> userList = new ArrayList<User>();
-        Query query;
-        try {
-            query = getCurrentSession().createQuery("from com.scncm.model.User u where username = :username");
-            query.setParameter("username", username);
-            userList = query.list();
-        } catch (QueryException e) {
-            logger.warn(e.getMessage());
-        }
-
-        if (userList.size() > 0)
-            return userList.get(0);
-        else
-            return null;
-    }
-
-    public Integer getUserIdByUsername(String username){
-
-        List<Integer> userId = new ArrayList<Integer>();
-        Query query;
-        try {
-            query = getCurrentSession().createSQLQuery("select U.id from users U where U.username = :username");
-            query.setParameter("username", username);
-            userId = query.list();
-        } catch (QueryException e) {
-            logger.warn(e.getMessage());
-        }
-
-        if (userId.size() > 0)
-            return userId.get(0);
-        else
-            return null;
-    }
-
     public User getUserByEmail(String email) {
-        List<User> userList = new ArrayList<User>();
+        List userList = new ArrayList<>();
         Query query;
+
         try {
-            query = getCurrentSession().createQuery("from com.scncm.model.User u where email = :email");
+            query = getCurrentSession().createQuery("from com.agrocom.model.User u where email = :email");
             query.setParameter("email", email);
             userList = query.list();
         } catch (QueryException e) {
@@ -77,16 +45,17 @@ public class UserDAOImpl implements UserDAO {
         }
 
         if (userList.size() > 0)
-            return userList.get(0);
+            return (User) userList.get(0);
         else
             return null;
     }
 
     public User getUserByToken (String token) {
-        List<User> userList = new ArrayList<User>();
+        List userList = new ArrayList<>();
         Query query;
+
         try {
-            query = getCurrentSession().createQuery("from com.scncm.model.User u where token = :token");
+            query = getCurrentSession().createQuery("from com.agrocom.model.User u where token = :token");
             query.setParameter("token", token);
             userList = query.list();
         } catch (QueryException e) {
@@ -94,7 +63,7 @@ public class UserDAOImpl implements UserDAO {
         }
 
         if (userList.size() > 0)
-            return userList.get(0);
+            return (User) userList.get(0);
         else
             return null;
     }
