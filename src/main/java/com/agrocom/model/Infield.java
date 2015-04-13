@@ -46,4 +46,169 @@ public class Infield implements Serializable {
 
     @Column(name = "last_year")
     private String lastYear;
+
+    public Long getInfieldId() {
+        return infieldId;
+    }
+
+    public void setInfieldId(Long infieldId) {
+        this.infieldId = infieldId;
+    }
+
+    public Society getSociety() {
+        return society;
+    }
+
+    public void setSociety(Society society) {
+        this.society = society;
+    }
+
+    public User getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(User tenant) {
+        this.tenant = tenant;
+    }
+
+    public String getLocationCode() {
+        return locationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        this.locationCode = locationCode;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
+    }
+
+    public String getFiveYearsAgo() {
+        return fiveYearsAgo;
+    }
+
+    public void setFiveYearsAgo(String fiveYearsAgo) {
+        this.fiveYearsAgo = fiveYearsAgo;
+    }
+
+    public String getFourYearsAgo() {
+        return fourYearsAgo;
+    }
+
+    public void setFourYearsAgo(String fourYearsAgo) {
+        this.fourYearsAgo = fourYearsAgo;
+    }
+
+    public String getThreeYearsAgo() {
+        return threeYearsAgo;
+    }
+
+    public void setThreeYearsAgo(String threeYearsAgo) {
+        this.threeYearsAgo = threeYearsAgo;
+    }
+
+    public String getTwoYearsAgo() {
+        return twoYearsAgo;
+    }
+
+    public void setTwoYearsAgo(String twoYearsAgo) {
+        this.twoYearsAgo = twoYearsAgo;
+    }
+
+    public String getLastYear() {
+        return lastYear;
+    }
+
+    public void setLastYear(String lastYear) {
+        this.lastYear = lastYear;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Infield infield = (Infield) o;
+
+        if (county != null ? !county.equals(infield.county) : infield.county != null) return false;
+        if (fiveYearsAgo != null ? !fiveYearsAgo.equals(infield.fiveYearsAgo) : infield.fiveYearsAgo != null)
+            return false;
+        if (fourYearsAgo != null ? !fourYearsAgo.equals(infield.fourYearsAgo) : infield.fourYearsAgo != null)
+            return false;
+        if (infieldId != null ? !infieldId.equals(infield.infieldId) : infield.infieldId != null) return false;
+        if (lastYear != null ? !lastYear.equals(infield.lastYear) : infield.lastYear != null) return false;
+        if (locationCode != null ? !locationCode.equals(infield.locationCode) : infield.locationCode != null)
+            return false;
+        if (society != null ? !society.equals(infield.society) : infield.society != null) return false;
+        if (tenant != null ? !tenant.equals(infield.tenant) : infield.tenant != null) return false;
+        if (threeYearsAgo != null ? !threeYearsAgo.equals(infield.threeYearsAgo) : infield.threeYearsAgo != null)
+            return false;
+        if (twoYearsAgo != null ? !twoYearsAgo.equals(infield.twoYearsAgo) : infield.twoYearsAgo != null) return false;
+        if (village != null ? !village.equals(infield.village) : infield.village != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = infieldId != null ? infieldId.hashCode() : 0;
+        result = 31 * result + (society != null ? society.hashCode() : 0);
+        result = 31 * result + (tenant != null ? tenant.hashCode() : 0);
+        result = 31 * result + (locationCode != null ? locationCode.hashCode() : 0);
+        result = 31 * result + (county != null ? county.hashCode() : 0);
+        result = 31 * result + (village != null ? village.hashCode() : 0);
+        result = 31 * result + (fiveYearsAgo != null ? fiveYearsAgo.hashCode() : 0);
+        result = 31 * result + (fourYearsAgo != null ? fourYearsAgo.hashCode() : 0);
+        result = 31 * result + (threeYearsAgo != null ? threeYearsAgo.hashCode() : 0);
+        result = 31 * result + (twoYearsAgo != null ? twoYearsAgo.hashCode() : 0);
+        result = 31 * result + (lastYear != null ? lastYear.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Infield{" +
+                "infieldId=" + infieldId +
+                ", society=" + society +
+                ", tenant=" + tenant +
+                ", locationCode='" + locationCode + '\'' +
+                ", county='" + county + '\'' +
+                ", village='" + village + '\'' +
+                ", fiveYearsAgo='" + fiveYearsAgo + '\'' +
+                ", fourYearsAgo='" + fourYearsAgo + '\'' +
+                ", threeYearsAgo='" + threeYearsAgo + '\'' +
+                ", twoYearsAgo='" + twoYearsAgo + '\'' +
+                ", lastYear='" + lastYear + '\'' +
+                '}';
+    }
+
+    public Infield() {
+    }
+
+    public Infield(Society society, User tenant, String locationCode, String county, String village,
+                   String fiveYearsAgo, String fourYearsAgo, String threeYearsAgo, String twoYearsAgo,
+                   String lastYear) {
+        this.society = society;
+        this.tenant = tenant;
+        this.locationCode = locationCode;
+        this.county = county;
+        this.village = village;
+        this.fiveYearsAgo = fiveYearsAgo;
+        this.fourYearsAgo = fourYearsAgo;
+        this.threeYearsAgo = threeYearsAgo;
+        this.twoYearsAgo = twoYearsAgo;
+        this.lastYear = lastYear;
+    }
 }

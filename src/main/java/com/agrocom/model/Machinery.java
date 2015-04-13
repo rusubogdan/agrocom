@@ -153,4 +153,18 @@ public class Machinery implements Serializable {
                 ", specificationLink='" + specificationLink + '\'' +
                 '}';
     }
+
+    public Machinery() {
+    }
+
+    public Machinery(Garage garage, MachineryType machineryType, String machineryName, Integer productionYear,
+                     Integer consumption, Long kmOnBoard, String specificationLink) {
+        this.garage = garage;
+        this.machineryType = machineryType;
+        this.machineryName = machineryName;
+        this.productionYear = productionYear;
+        this.consumption = consumption;
+        this.kmOnBoard = kmOnBoard;
+        this.specificationLink = specificationLink;
+    }
 }

@@ -119,4 +119,15 @@ public class Garage implements Serializable {
                 ", address='" + address + '\'' +
                 '}';
     }
+
+    public Garage() {
+    }
+
+    public Garage(Society society, List<Machinery> machines, Integer capacity, String name, String address) {
+        this.society = society;
+        this.machines = machines;
+        this.capacity = capacity;
+        this.name = name;
+        this.address = address;
+    }
 }
