@@ -1,5 +1,6 @@
 package com.agrocom.init;
 
+import com.agrocom.config.TilesDefinitionsConfig;
 import org.hibernate.SessionFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,15 +8,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesView;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -89,14 +96,22 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return transactionManager;
     }
 
-    @Bean
-    public UrlBasedViewResolver setupViewResolver() {
-        UrlBasedViewResolver resolver = new UrlBasedViewResolver();
-        resolver.setPrefix("/WEB-INF/view/");
-        resolver.setSuffix(".jsp");
-        resolver.setViewClass(JstlView.class);
-        return resolver;
-    }
+//    @Bean
+//    public UrlBasedViewResolver setupViewResolver() {
+//        UrlBasedViewResolver resolver = new UrlBasedViewResolver();
+//        resolver.setPrefix("/WEB-INF/views/");
+//        resolver.setSuffix(".jsp");
+//        resolver.setViewClass(JstlView.class);
+//        return resolver;
+//    }
+//    @Bean
+//    public InternalResourceViewResolver setupViewResolver() {
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/WEB-INF/views/");
+//        resolver.setSuffix(".jsp");
+//        resolver.setViewClass(JstlView.class);
+//        return resolver;
+//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -106,6 +121,33 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
+    }
+
+    /**
+     * <code>Resolves views selected for rendering by @Controllers to tiles resources in the
+     * Apache TilesConfigurer bean</code>
+     */
+    @Bean
+    public TilesViewResolver getTilesViewResolver() {
+        TilesViewResolver tilesViewResolver = new TilesViewResolver();
+        tilesViewResolver.setViewClass(TilesView.class);
+        return tilesViewResolver;
+    }
+
+    /**
+     * <code>Configures Apache tiles definitions bean used by Apache TilesViewResolver to resolve views
+     * selected for rendering by @Controllers</code>
+     */
+    @Bean
+    public TilesConfigurer getTilesConfigurer() {
+        TilesConfigurer tilesConfigurer = new TilesConfigurer();
+        tilesConfigurer.setCheckRefresh(true);
+        tilesConfigurer.setDefinitionsFactoryClass(TilesDefinitionsConfig.class);
+
+        // Add apache tiles definitions
+        TilesDefinitionsConfig.addDefinitions();
+
+        return tilesConfigurer;
     }
 
     /*for custom application messages*/

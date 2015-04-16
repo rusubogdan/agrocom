@@ -2,11 +2,9 @@ package com.agrocom.dao;
 
 import com.agrocom.model.User;
 
-import org.hibernate.Query;
-import org.hibernate.QueryException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +48,19 @@ public class UserDAOImpl implements UserDAO {
             return null;
     }
 
-    public User getUserByToken (String token) {
+    public List<User> searchUserByFirstName(String firstName) {
+        Criteria criteria = getCurrentSession().createCriteria(User.class);
+        criteria.add(Restrictions.eq("firstName", firstName));
+        return criteria.list();
+    }
+
+    public List<User> searchUserByLastName(String lastName) {
+        Criteria criteria = getCurrentSession().createCriteria(User.class);
+        criteria.add(Restrictions.eq("lastName", lastName));
+        return criteria.list();
+    }
+
+    public User getUserByToken(String token) {
         List userList = new ArrayList<>();
         Query query;
 
@@ -68,6 +78,16 @@ public class UserDAOImpl implements UserDAO {
             return null;
     }
 
+    public User getUserByFirstAndLastName(String firstName, String lastName) {
+        Criteria criteria = getCurrentSession().createCriteria(User.class);
+        criteria.add(Restrictions.and(
+                        Restrictions.eq("firstName", lastName),
+                        Restrictions.eq("lastName", lastName)
+                )
+        );
+        return criteria.list() != null ? (User) criteria.list().get(0) : null;
+    }
+
     public Integer addUser(User user) {
         Integer savedUserId = -1;
 
@@ -80,7 +100,7 @@ public class UserDAOImpl implements UserDAO {
         return savedUserId;
     }
 
-    public Boolean updateUser (User user) {
+    public Boolean updateUser(User user) {
         try {
             getCurrentSession().update(user);
             getCurrentSession().getTransaction().commit();
@@ -90,7 +110,7 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public Boolean deleteUser (User user) {
+    public Boolean deleteUser(User user) {
         try {
             getCurrentSession().delete(user);
             getCurrentSession().getTransaction().commit();

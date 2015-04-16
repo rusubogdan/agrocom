@@ -10,8 +10,11 @@ import com.agrocom.model.User;
 import org.slf4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,7 +31,10 @@ public class UserServiceImpl implements UserService {
     private MailService mailService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public User getUser (Long userId) {
         return userDAO.getUser(userId);
@@ -40,6 +46,18 @@ public class UserServiceImpl implements UserService {
 
     public User getUserByToken (String token) {
         return userDAO.getUserByToken(token);
+    }
+
+    public User getUserByFirstAndLastName (String firstName, String lastName) {
+        return userDAO.getUserByFirstAndLastName(firstName, lastName);
+    }
+
+    public List<User> searchUserByFirstName (String firstName) {
+        return userDAO.searchUserByFirstName(firstName);
+    }
+
+    public List<User> searchUserByLastName (String lastName) {
+        return userDAO.searchUserByLastName(lastName);
     }
 
     public Integer addUser (User user) {
@@ -63,12 +81,20 @@ public class UserServiceImpl implements UserService {
         return userDAO.deleteUser(user);
     }
 
-    public User fromSignUpForm (SignUpForm signUpForm, Boolean thing) {
+    public User createUserWithoutSaving (String firstName, String lastName, String email, String password) {
         User user = new User();
-        user.setEmail(signUpForm.getEmail());
-        // todo encoded password
-        user.setPassword(signUpForm.getPassword());
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setToken(generateRandomToken());
 
+        // todo confirm account via email confirmation
+//        user.setIsConfirmed(false);
+        user.setIsConfirmed(true);
+
+        // todo date, etc
+        user.setPassword(passwordEncoder.encode(password));
         return user;
     }
 

@@ -5,13 +5,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView loginFormAfterRequest(
+    public String loginFormAfterRequest(
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "logout", required = false) String logout,
             @RequestParam(value = "forbidden", required = false) String forbidden,
@@ -23,10 +22,9 @@ public class LoginController {
             return new ModelAndView("redirect:/wall");
         }*/
 
-        ModelAndView mv = new ModelAndView("home");
         String constraintError = (String) model.asMap().get("error");
 
-        if (constraintError != null) {
+        /*if (constraintError != null) {
             mv.addObject("showRegistrationForm", true);
             switch (constraintError) {
                 case "invalidEmail": {
@@ -58,9 +56,9 @@ public class LoginController {
                     return mv;
                 }
             }
-        }
+        }*/
 
-        mv.addObject("showRegistrationForm", false);
+        /*mv.addObject("showRegistrationForm", false);
 
         if (error != null) {
             mv.addObject("error", "Invalid username or password!");
@@ -76,8 +74,8 @@ public class LoginController {
 
         if (registerSuccessful != null) {
             mv.addObject("registerSuccessful", "Register successfully");
-        }
+        }*/
 
-        return mv;
+        return "login";
     }
 }

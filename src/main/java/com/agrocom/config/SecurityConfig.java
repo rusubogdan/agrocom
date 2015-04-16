@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/resources/**", "/j_spring_security_check", "/register/**")
+                    .antMatchers("/", "/resources/**", "/j_spring_security_check", "/register/**")
                         .permitAll()
                 .and()
                     .authorizeRequests()

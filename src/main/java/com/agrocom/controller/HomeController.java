@@ -12,6 +12,8 @@ public class HomeController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView homePage() {
         // some introduction of the platform
-        return new ModelAndView("home");
+        ModelAndView mv = new ModelAndView("home");
+        mv.addObject("content", "content");
+        return mv;
     }
 }

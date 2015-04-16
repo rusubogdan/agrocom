@@ -1,0 +1,18 @@
+#login-box {
+    margin-top: 50px;
+}
+
+#login-box .panel-body {
+    padding-top:30px;
+}
+
+#login-form {
+
+}
+
+.forgot-password {
+    float: right;
+    font-size: 80%;
+    position: relative;
+    top: -10px
+}
