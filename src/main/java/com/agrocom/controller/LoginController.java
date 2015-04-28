@@ -1,16 +1,19 @@
 package com.agrocom.controller;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginFormAfterRequest(
+    public ModelAndView loginFormAfterRequest(
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "logout", required = false) String logout,
             @RequestParam(value = "forbidden", required = false) String forbidden,
@@ -18,21 +21,23 @@ public class LoginController {
             Model model) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
-        /*if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
-            return new ModelAndView("redirect:/wall");
-        }*/
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            return new ModelAndView("redirect:/home");
+        }
+
+        ModelAndView mv = new ModelAndView("login");
 
         String constraintError = (String) model.asMap().get("error");
 
-        /*if (constraintError != null) {
+        if (constraintError != null) {
             mv.addObject("showRegistrationForm", true);
             switch (constraintError) {
                 case "invalidEmail": {
                     mv.addObject("error", "Please enter a valid email");
                     return mv;
                 }
-                case "usernameTooShort": {
-                    mv.addObject("error", "Please add a minimum 4 letters username");
+                case "firstNameOrLastNameTooShort": {
+                    mv.addObject("error", "Please add a minimum 4 letters name");
                     return mv;
                 }
                 case "invalidPassword": {
@@ -43,8 +48,8 @@ public class LoginController {
                     mv.addObject("error", "The entered email is already used");
                     return mv;
                 }
-                case "usernameAlreadyUsed": {
-                    mv.addObject("error", "The entered username is already used");
+                case "nameAlreadyUsed": {
+                    mv.addObject("error", "The entered name is already used");
                     return mv;
                 }
                 case "emptyFields": {
@@ -56,9 +61,9 @@ public class LoginController {
                     return mv;
                 }
             }
-        }*/
+        }
 
-        /*mv.addObject("showRegistrationForm", false);
+        mv.addObject("showRegistrationForm", false);
 
         if (error != null) {
             mv.addObject("error", "Invalid username or password!");
@@ -74,8 +79,8 @@ public class LoginController {
 
         if (registerSuccessful != null) {
             mv.addObject("registerSuccessful", "Register successfully");
-        }*/
+        }
 
-        return "login";
+        return mv;
     }
 }

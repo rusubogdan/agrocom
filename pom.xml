@@ -21,6 +21,8 @@
         <javaLanguage.version>1.8</javaLanguage.version>
     </properties>
 
+
+
     <dependencies>
         <!-- DB related dependencies -->
         <dependency>
@@ -285,6 +287,34 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/local</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>live</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/live</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
+
+
+
     <build>
         <finalName>agrocom</finalName>
         <pluginManagement>
@@ -315,6 +345,9 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
     </build>
+
+
 
 </project>

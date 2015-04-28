@@ -37,10 +37,10 @@ public class SignUpController {
     UserService userService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView doRegister (
+    public ModelAndView doRegister(
             @RequestParam(value = "first-name") String firstName,
             @RequestParam(value = "last-name") String lastName,
-            @RequestParam(value = "email")    String email,
+            @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "confirm-password") String confirmedPassword,
             HttpServletRequest request,
@@ -61,7 +61,7 @@ public class SignUpController {
         }
 
         if (firstName.length() <= 3 || lastName.length() <= 3) {
-            redirectAttributes.addFlashAttribute("error", "usernameTooShort");
+            redirectAttributes.addFlashAttribute("error", "firstNameOrLastNameTooShort");
             return mv;
         }
 
@@ -84,34 +84,34 @@ public class SignUpController {
         // check if the exact first name and last name pair already exists
         User userByFirstAndLastName = userService.getUserByFirstAndLastName(firstName, lastName);
         if (userByFirstAndLastName != null) {
-            redirectAttributes.addFlashAttribute("error", "usernameAlreadyUsed");
+            redirectAttributes.addFlashAttribute("error", "nameAlreadyUsed");
             return mv;
         }
-//
 
         // every engineer can create accounts for workers and tenants and , afterwards, they will log in
-        // a generated password will be created and send to them via email
+        // a generated token will be created and send to them via email
         // at first user they will be advised to change that password
 
         // create user
         User user = userService.createUserWithoutSaving(firstName, lastName, email, password);
 
-//      Boolean success = userService.sendSignUpEmail(user);
+        Boolean success = userService.sendSignUpEmail(user);
 //      if success ...
-        //save user
-        Integer createdUserId = userService.addUser(user);
+        if (success) {
+            Integer createdUserId = userService.addUser(user);
 
-        if (createdUserId == -1) {
-            logger.warn("User could not be created. Redirect to login error");
-            redirectAttributes.addFlashAttribute("error", "errorCreatingUser");
+            if (createdUserId == -1) {
+                logger.warn("User could not be created. Redirect to login error");
+                redirectAttributes.addFlashAttribute("error", "errorCreatingUser");
 
-            return mv;
-        } else {
-            logger.debug("User created (unconfirmed): " + user);
+                return mv;
+            } else {
+                logger.debug("User created (unconfirmed): " + user);
+            }
         }
 
-//        // authenticate user and redirect to first page
-        UsernamePasswordAuthenticationToken authRequest =
+//        // create user and redirect to first page
+        /*UsernamePasswordAuthenticationToken authRequest =
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 
 //        Authenticate the user
@@ -121,8 +121,9 @@ public class SignUpController {
 //
 //        // Create a new session and add the security context.
         HttpSession session = request.getSession(true);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);*/
 
-        return new ModelAndView("redirect:/home");
+        // account confirmation via email required before login
+        return new ModelAndView("redirect:/firstPage");
     }
 }

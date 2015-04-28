@@ -4,6 +4,11 @@
 <html>
 <head>
     <title><tiles:insertAttribute name="title" ignore="true">.</tiles:insertAttribute></title>
+
+    <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>
+
+    <script src="<c:url value="/resources/js/home.js"/> "></script>
+
 </head>
 <body style="background-color: #FFF">
 <div class="page">

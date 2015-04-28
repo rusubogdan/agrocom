@@ -3,26 +3,27 @@ package com.agrocom.service;
 import com.agrocom.dao.UserDAO;
 import com.agrocom.helpers.AppUtil;
 import com.agrocom.helpers.Constants;
-import com.agrocom.helpers.SignUpForm;
 import com.agrocom.model.Role;
 import com.agrocom.model.User;
 
 import org.slf4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 @Transactional
+@PropertySource("classpath:application.properties")
 public class UserServiceImpl implements UserService {
 
     private Logger logger = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
-
-    private static final String signUpConfirmUrl = "http://localhost:8080/confirm/";
 
     @Autowired
     private UserDAO userDAO;
@@ -35,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    private Environment env;
 
     public User getUser (Long userId) {
         return userDAO.getUser(userId);
@@ -86,19 +90,26 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);
         user.setToken(generateRandomToken());
 
         // todo confirm account via email confirmation
-//        user.setIsConfirmed(false);
+        user.setIsConfirmed(false);
         user.setIsConfirmed(true);
 
         // todo date, etc
+
+        // todo salted password
         user.setPassword(passwordEncoder.encode(password));
+
+        // the engineers will have role admin
+        Role adminRole = roleService.getRole(Role.ROLE_ADMIN);
+        user.setRole(adminRole);
+
         return user;
     }
 
     public Boolean sendSignUpEmail (User user) {
+        String signUpConfirmUrl = env.getRequiredProperty("account.confirm.url");
         String toEmail = user.getEmail();
         logger.info("Sending signUp email for " + toEmail);
         String subject = "Agrocom account verification";
