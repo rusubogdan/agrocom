@@ -32,19 +32,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/fonts/**", "/img/**", "/js/**");
+        web.ignoring().antMatchers("/css/**", "/fonts/**", "/images/**", "/js/**");
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/", "/resources/**", "/j_spring_security_check", "/register/**", "/sendMessage/**")
+                // add a few others todo delete in the future
+                    .antMatchers("/", "/resources/**", "/j_spring_security_check", "favicon.ico",
+                            "/register/**", "/sendMessage/**", "/home/**", "/home")
                         .permitAll()
                 .and()
                     .authorizeRequests()
                         .anyRequest()
-                            .hasAnyRole("ADMIN", "USER", "MODERATOR")
+//                            .hasAnyRole("ADMIN", "USER", "MODERATOR")
+                            .permitAll()
                 .and()
                     .formLogin()
                         .loginPage("/login")

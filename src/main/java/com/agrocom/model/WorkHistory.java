@@ -42,6 +42,9 @@ public class WorkHistory implements Serializable {
     @Column(name = "duration")
     private Integer duration;
 
+    @Column(name = "status")
+    private String status;
+
     public Long getWorkHistoryId() {
         return workHistoryId;
     }
@@ -106,6 +109,14 @@ public class WorkHistory implements Serializable {
         this.duration = duration;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -116,6 +127,7 @@ public class WorkHistory implements Serializable {
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (duration != null ? !duration.equals(that.duration) : that.duration != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (infield != null ? !infield.equals(that.infield) : that.infield != null) return false;
         if (machinery != null ? !machinery.equals(that.machinery) : that.machinery != null) return false;
         if (workHistoryId != null ? !workHistoryId.equals(that.workHistoryId) : that.workHistoryId != null)
@@ -136,6 +148,7 @@ public class WorkHistory implements Serializable {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (duration != null ? duration.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
@@ -148,8 +161,9 @@ public class WorkHistory implements Serializable {
                 ", machinery=" + machinery +
                 ", workType=" + workType +
                 ", date=" + date +
-                ", description='" + description + '\'' +
+                ", description='" + description +
                 ", duration=" + duration +
+                ", status='" + status +
                 '}';
     }
 
@@ -157,7 +171,7 @@ public class WorkHistory implements Serializable {
     }
 
     public WorkHistory(User worker, Infield infield, Machinery machinery, WorkType workType, Timestamp date,
-                       String description, Integer duration) {
+                       String description, Integer duration, String status) {
         this.worker = worker;
         this.infield = infield;
         this.machinery = machinery;
@@ -165,5 +179,7 @@ public class WorkHistory implements Serializable {
         this.date = date;
         this.description = description;
         this.duration = duration;
+        this.status = status;
     }
+
 }

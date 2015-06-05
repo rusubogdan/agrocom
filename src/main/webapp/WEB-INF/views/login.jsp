@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<div class="container">
+<div class="container login-container">
     <div id="login-box" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -90,6 +90,13 @@
                         <label for="email" class="col-md-3 control-label">Email</label>
                         <div class="col-md-9">
                             <input id="email" type="text" class="form-control" name="email" placeholder="Email Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pin" class="col-md-3 control-label">PIN</label>
+                        <div class="col-md-9">
+                            <input id="pin" type="text" class="form-control" name="pin"
+                                   placeholder="PIN">
                         </div>
                     </div>
                     <div class="form-group">

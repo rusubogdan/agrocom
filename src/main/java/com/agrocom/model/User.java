@@ -40,6 +40,9 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "cnp")
+    private String CNP;
+
     @Column(name = "phone")
     private String phone;
 
@@ -120,6 +123,14 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getCNP() {
+        return CNP;
+    }
+
+    public void setCNP(String cnp) {
+        this.CNP = cnp;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -196,6 +207,7 @@ public class User implements Serializable {
         if (employingSociety != null ? !employingSociety.equals(user.employingSociety) : user.employingSociety != null)
             return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (CNP != null ? !CNP.equals(user.CNP) : user.CNP != null) return false;
         if (infields != null ? !infields.equals(user.infields) : user.infields != null) return false;
         if (isConfirmed != null ? !isConfirmed.equals(user.isConfirmed) : user.isConfirmed != null) return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
@@ -220,6 +232,7 @@ public class User implements Serializable {
         result = 31 * result + (employingSociety != null ? employingSociety.hashCode() : 0);
         result = 31 * result + (infields != null ? infields.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (CNP != null ? CNP.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (mobile != null ? mobile.hashCode() : 0);
@@ -242,6 +255,7 @@ public class User implements Serializable {
                 ", infields=" + infields +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", CNP='" + CNP + '\'' +
                 ", phone='" + phone + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
@@ -257,13 +271,14 @@ public class User implements Serializable {
     }
 
     public User(Role role, List<Society> ownedSocieties, Society employingSociety, List<Infield> infields,
-                String firstName, String lastName, String phone, String mobile, String email, String password,
+                String firstName, String cnp, String lastName, String phone, String mobile, String email, String password,
                 Timestamp registerDate, Boolean isConfirmed, Timestamp deletedDate, String token) {
         this.role = role;
         this.ownedSocieties = ownedSocieties;
         this.employingSociety = employingSociety;
         this.infields = infields;
         this.firstName = firstName;
+        this.CNP = cnp;
         this.lastName = lastName;
         this.phone = phone;
         this.mobile = mobile;

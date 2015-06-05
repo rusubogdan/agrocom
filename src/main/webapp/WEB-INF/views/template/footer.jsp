@@ -1,8 +1,5 @@
-<div>
-    footer
-    Da
-    asd
-    asd
-    asfsa
-    d
+<div class="bottom">
+    <div class="container">
+        Footer
+    </div>
 </div>

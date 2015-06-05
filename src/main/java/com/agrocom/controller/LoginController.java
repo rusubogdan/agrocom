@@ -21,9 +21,9 @@ public class LoginController {
             Model model) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
-        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
-            return new ModelAndView("redirect:/home");
-        }
+//        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+//            return new ModelAndView("redirect:/home");
+//        }
 
         ModelAndView mv = new ModelAndView("login");
 
