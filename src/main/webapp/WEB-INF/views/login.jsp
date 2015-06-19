@@ -67,7 +67,7 @@
             </div>
             <div class="panel-body">
                 <form id="signupform" action="/register"
-                      class="form-horizontal" role="form">
+                      class="form-horizontal" role="form" method="POST">
                     <div id="signupalert" style="display:none" class="alert alert-danger">
                         <p>Error:</p>
                         <span></span>
@@ -117,7 +117,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9">
-                            <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i>
+                            <button id="btn-signup" type="submit" class="btn btn-info"><i class="icon-hand-right"></i>
                                 &nbsp Sign Up
                             </button>
                         </div>

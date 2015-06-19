@@ -53,6 +53,17 @@ public final class TilesDefinitionsConfig implements DefinitionsFactory {
         tilesDefinitions.put(name, new Definition(name, ANON_USER_TEMPLATE, attributes));
     }
 
+    private static void addErrorLayoutDef(String name, String title, String body) {
+        Map<String, Attribute> attributes = new HashMap<>();
+
+        attributes.put("title", new Attribute(title));
+        attributes.put("header", new Attribute("/WEB-INF/views/template/header.jsp"));
+        attributes.put("body", new Attribute(body));
+        attributes.put("footer", new Attribute("/WEB-INF/views/template/footer.jsp"));
+
+        tilesDefinitions.put(name, new Definition(name, ANON_USER_TEMPLATE, attributes));
+    }
+
     /**
      * <code>Add Apache tiles definitions</code>
      */
@@ -62,6 +73,10 @@ public final class TilesDefinitionsConfig implements DefinitionsFactory {
         addAnonUserLayoutDef("firstPage", "First Page", "/WEB-INF/views/firstPage.jsp");
         addAnonUserLayoutDef("login", "Login/Register", "/WEB-INF/views/login.jsp");
         addAnonUserLayoutDef("publicPage", "public", "/WEB-INF/views/publicPage.jsp");
+        addAnonUserLayoutDef("500", "500", "/WEB-INF/views/500.jsp");
+        addAnonUserLayoutDef("404", "404", "/WEB-INF/views/404.jsp");
         addAnonUserLayoutDef("announcements", "announcements", "/WEB-INF/views/announcements.jsp");
+//        addErrorLayoutDef("500", "500", "/WEB-INF/views/500.jsp");
+//        addErrorLayoutDef("404", "404", "/WEB-INF/views/404.jsp");
     }
 }

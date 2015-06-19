@@ -8,9 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "")
 public class ErrorController {
 
-    @RequestMapping(value = "/505")
-    public ModelAndView serve505ErrorPage () {
-        return new ModelAndView("505");
+    @RequestMapping(value = "/500")
+    public ModelAndView serve500ErrorPage () {
+        return new ModelAndView("500");
     }
 
     @RequestMapping(value = "/404")

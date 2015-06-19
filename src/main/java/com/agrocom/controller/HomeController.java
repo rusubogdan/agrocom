@@ -5,8 +5,6 @@ import com.agrocom.model.Infield;
 import com.agrocom.model.User;
 import com.agrocom.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,25 +12,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/home", method = RequestMethod.GET)
-@PropertySource("classpath:application.properties")
 public class HomeController {
-
-    private static final String sendGridUsername = "mail.sendGrid.username";
-    private static final String sendGridPassword = "mail.sendGrid.password";
-
-    @Resource
-    private Environment env;
 
     @Autowired
     MailService mailService;
+
+    @RequestMapping(value = "/testMail", method = RequestMethod.GET)
+    @ResponseBody
+    public Map testMailService() {
+        Boolean success = mailService.sendMessage("rusubogdan93@gmail.com", "test", "test test");
+        Map map = new HashMap<>();
+        map.put("success", success);
+
+        return map;
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView home() {
@@ -57,7 +59,7 @@ public class HomeController {
 //        User user = new User();
 //        user.setFirstName("bla");
 //        user.setEmail("bla@gail.com");
-//        user.setCNP("1931193939234234");
+//        user.setPIN("1931193939234234");
 
         WorkHistoryMin work = new WorkHistoryMin();
         work.Id = 12;
@@ -74,7 +76,7 @@ public class HomeController {
         User user = new User();
         user.setFirstName("bla");
         user.setEmail("bla@gail.com");
-        user.setCNP("1931193939234234");
+        user.setPIN("1931193939234234");
 
         return user;
     }
@@ -87,7 +89,7 @@ public class HomeController {
         User user = new User();
         user.setFirstName("bla");
         user.setEmail("bla@gail.com");
-        user.setCNP("1931193939234234");
+        user.setPIN("1931193939234234");
 
         return user;
     }
@@ -174,7 +176,7 @@ public class HomeController {
             user = new UserMin();
             user.Id = i + 1;
             user.FullName = fullnames.get(i);
-            user.CNP = cnps.get(i);
+            user.PIN = cnps.get(i);
             user.Email = emails.get(i);
             user.Mobile = mobiles.get(i);
             list.add(user);
@@ -193,7 +195,7 @@ public class HomeController {
             user = new UserMin();
             user.Id = i + 5;
             user.FullName = "tenant" + i;
-            user.CNP = "193110302030234";
+            user.PIN = "193110302030234";
             user.Email = "tenant" + i + "@gmail.com";
             user.Mobile = "0743281908";
             list.add(user);
@@ -247,6 +249,17 @@ public class HomeController {
         return list;
     }
 
+    @RequestMapping(value = "/ajax/getSocieties", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getSocieties() {
+        List<String> societies = new ArrayList<>();
+
+        for(int i=0; i<=5; i++) {
+            societies.add("SC Agro SRL" + i);
+        }
+
+        return societies;
+    }
 
     @RequestMapping(value = "/ajax/sendPostMessage", method = RequestMethod.POST)
     @ResponseBody
@@ -258,10 +271,12 @@ public class HomeController {
         return list;
     }
 
+
+
     public class UserMin {
         public Integer Id;
         public String FullName;
-        public String CNP;
+        public String PIN;
         public String Mobile;
         public String Email;
     }

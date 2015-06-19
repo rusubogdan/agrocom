@@ -5,17 +5,14 @@ import com.agrocom.helpers.AppUtil;
 import com.agrocom.helpers.Constants;
 import com.agrocom.model.Role;
 import com.agrocom.model.User;
-
 import org.slf4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
@@ -37,8 +34,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Resource
-    private Environment env;
+    @Value(value = "${account.confirm.url}")
+    private String signUpConfirmUrl;
 
     public User getUser (Long userId) {
         return userDAO.getUser(userId);
@@ -50,6 +47,10 @@ public class UserServiceImpl implements UserService {
 
     public User getUserByToken (String token) {
         return userDAO.getUserByToken(token);
+    }
+
+    public User getUserByPin(String pin) {
+        return userDAO.getUserByPin(pin);
     }
 
     public User getUserByFirstAndLastName (String firstName, String lastName) {
@@ -65,14 +66,14 @@ public class UserServiceImpl implements UserService {
     }
 
     public Integer addUser (User user) {
-        user.setToken(generateRandomToken());
+//        user.setToken(generateRandomToken());
         // todo set encrypted password
 //        user.setPassword();
 //        every new created user will have the role user
         // todo think this part
 
-        Role role = roleService.getRole(Role.ROLE_USER);
-        user.setRole(role);
+//        Role role = roleService.getRole(Role.ROLE_USER);
+//        user.setRole(role);
 
         return userDAO.addUser(user);
     }
@@ -85,31 +86,30 @@ public class UserServiceImpl implements UserService {
         return userDAO.deleteUser(user);
     }
 
-    public User createUserWithoutSaving (String firstName, String lastName, String email, String password) {
+    public User createUserWithoutSaving (String firstName, String lastName, String email, String pin, String password) {
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
+        user.setPIN(pin);
+
         user.setToken(generateRandomToken());
 
         // todo confirm account via email confirmation
         user.setIsConfirmed(false);
-        user.setIsConfirmed(true);
 
         // todo date, etc
 
         // todo salted password
         user.setPassword(passwordEncoder.encode(password));
 
-        // the engineers will have role admin
-        Role adminRole = roleService.getRole(Role.ROLE_ADMIN);
-        user.setRole(adminRole);
+        Role userRole = roleService.getRole(Role.ROLE_USER);
+        user.setRole(userRole);
 
         return user;
     }
 
     public Boolean sendSignUpEmail (User user) {
-        String signUpConfirmUrl = env.getRequiredProperty("account.confirm.url");
         String toEmail = user.getEmail();
         logger.info("Sending signUp email for " + toEmail);
         String subject = "Agrocom account verification";

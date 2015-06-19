@@ -21,7 +21,7 @@ public class Role implements Serializable {
     @Column(name = "role_id")
     private Long roleId;
 
-    @Column(name = "role")
+    @Column(name = "role_name")
     private String role;
 
     public Long getRoleId() {

@@ -5,3 +5,80 @@
     height: 60px;
     background: rgba(10, 6, 14, 0.70);
 }
+
+/* societies selector  */
+.societies-holder {
+    max-width: 800px;
+}
+
+.society-holder {
+    width: 200px;
+    height: 80px;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    margin: 10px;
+    background-color: #97b1ff;
+    display: inline-block;
+
+}
+
+.top-side{
+    position: relative;
+    display: block;
+    margin: 3%;
+    text-align: center;
+    font-size: 16px;
+}
+
+.bottom-side {
+    position: relative;
+    display: block;
+    margin: 3%;
+    float: left;
+}
+
+
+/* societies selector  */
+
+/* announcements holder */
+.announcements-holder {
+    max-width: 800px;
+}
+
+.announcement {
+    width: 700px;
+    height: 100px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    margin: 10px;
+    background-color: #abffb8;
+    display: inline-block;
+
+}
+
+.announcement.imp {
+    background-color: #ff374a;
+}
+
+.announcement-title {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    float: left;
+}
+
+.announcement-body {
+    position: relative;
+    display: block;
+    margin: 3%;
+    float: left;
+}
+
+.priority {
+    width: 10px;
+    height: 10px;
+    float: left;
+    /*background-color: red;*/
+}
+/* announcements holder */

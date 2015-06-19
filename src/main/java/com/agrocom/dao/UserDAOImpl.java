@@ -78,6 +78,24 @@ public class UserDAOImpl implements UserDAO {
             return null;
     }
 
+    public User getUserByPin(String pin) {
+        List userList = new ArrayList<>();
+        Query query;
+
+        try {
+            query = getCurrentSession().createQuery("from com.agrocom.model.User u where pin = :pin");
+            query.setParameter("pin", pin);
+            userList = query.list();
+        } catch (QueryException e) {
+            logger.warn(e.getMessage());
+        }
+
+        if (userList.size() > 0)
+            return (User) userList.get(0);
+        else
+            return null;
+    }
+
     public User getUserByFirstAndLastName(String firstName, String lastName) {
         Criteria criteria = getCurrentSession().createCriteria(User.class);
         criteria.add(Restrictions.and(
@@ -85,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
                         Restrictions.eq("lastName", lastName)
                 )
         );
-        return criteria.list() != null ? (User) criteria.list().get(0) : null;
+        return criteria.list().size() > 0 ? (User) criteria.list().get(0) : null;
     }
 
     public Integer addUser(User user) {

@@ -12,6 +12,8 @@ public interface UserService {
 
     User getUserByToken(String token);
 
+    User getUserByPin(String pin);
+
     User getUserByFirstAndLastName(String firstName, String lastName);
 
     List searchUserByFirstName(String firstName);
@@ -24,7 +26,7 @@ public interface UserService {
 
     Boolean deleteUser(User user);
 
-    User createUserWithoutSaving(String firstName, String lastName, String email, String password);
+    User createUserWithoutSaving(String firstName, String lastName, String email, String pin, String password);
 
     Boolean sendSignUpEmail(User user);
 }

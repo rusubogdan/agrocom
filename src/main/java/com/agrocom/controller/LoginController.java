@@ -1,5 +1,6 @@
 package com.agrocom.controller;
 
+import com.agrocom.helpers.MessageServer;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginFormAfterRequest(
             @RequestParam(value = "error", required = false) String error,
@@ -21,9 +21,9 @@ public class LoginController {
             Model model) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
-//        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-//            return new ModelAndView("redirect:/home");
-//        }
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            return new ModelAndView("redirect:/");
+        }
 
         ModelAndView mv = new ModelAndView("login");
 
@@ -31,36 +31,8 @@ public class LoginController {
 
         if (constraintError != null) {
             mv.addObject("showRegistrationForm", true);
-            switch (constraintError) {
-                case "invalidEmail": {
-                    mv.addObject("error", "Please enter a valid email");
-                    return mv;
-                }
-                case "firstNameOrLastNameTooShort": {
-                    mv.addObject("error", "Please add a minimum 4 letters name");
-                    return mv;
-                }
-                case "invalidPassword": {
-                    mv.addObject("error", "Please add a minimum 6 letter password");
-                    return mv;
-                }
-                case "emailAlreadyUsed": {
-                    mv.addObject("error", "The entered email is already used");
-                    return mv;
-                }
-                case "nameAlreadyUsed": {
-                    mv.addObject("error", "The entered name is already used");
-                    return mv;
-                }
-                case "emptyFields": {
-                    mv.addObject("error", "Please fill all the fields");
-                    return mv;
-                }
-                case "errorCreatingUser": {
-                    mv.addObject("error", "An error occurred during account creation. Please try again");
-                    return mv;
-                }
-            }
+            mv.addObject("error", MessageServer.serveErrorMessage(constraintError));
+            return mv;
         }
 
         mv.addObject("showRegistrationForm", false);
@@ -79,6 +51,12 @@ public class LoginController {
 
         if (registerSuccessful != null) {
             mv.addObject("registerSuccessful", "Register successfully");
+        }
+
+        String success = (String) model.asMap().get("success");
+
+        if(success != null) {
+            mv.addObject("success", "Please confirm email!");
         }
 
         return mv;

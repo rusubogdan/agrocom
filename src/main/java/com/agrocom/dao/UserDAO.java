@@ -23,4 +23,6 @@ public interface UserDAO {
     Boolean updateUser(User user);
 
     Boolean deleteUser(User user);
+
+    User getUserByPin(String pin);
 }

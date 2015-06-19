@@ -48,6 +48,13 @@ var home = {
     },
     dataTable: {
         createTable: function () {
+
+           var ajaxUrl = "/home/testMail";
+
+            $.get(ajaxUrl, function (response) {
+               console.log(response);
+            });
+
             var settings = home.dataTable.getTableSettings();
             // this also creates the table object
             var myTable = home.dataTable.createHtmlForTable(settings.preBuildColumns);
@@ -134,7 +141,7 @@ var home = {
                     var columns = [
                         {'data': 'Id'},
                         {'data': 'FullName'},
-                        {'data': 'CNP'},
+                        {'data': 'PIN'},
                         {'data': 'Email'},
                         {'data': 'Mobile'}
                     ];
@@ -144,7 +151,7 @@ var home = {
                     columnsList[index++] = column;
                     column = $('<td>').html('FullName');
                     columnsList[index++] = column;
-                    column = $('<td>').html('CNP');
+                    column = $('<td>').html('PIN');
                     columnsList[index++] = column;
                     column = $('<td>').html('Email');
                     columnsList[index++] = column;
@@ -165,7 +172,7 @@ var home = {
                     var columns = [
                         {'data': 'Id'},
                         {'data': 'FullName'},
-                        {'data': 'CNP'},
+                        {'data': 'PIN'},
                         {'data': 'Email'},
                         {'data': 'Mobile'}
                     ];
@@ -175,9 +182,10 @@ var home = {
                     columnsList[index++] = column;
                     column = $('<td>').html('FullName');
                     columnsList[index++] = column;
-                    column = $('<td>').html('CNP');
+                    column = $('<td>').html('PIN');
                     columnsList[index++] = column;
                     column = $('<td>').html('Email');
+
                     columnsList[index++] = column;
                     column = $('<td>').html('Mobile');
                     columnsList[index++] = column;

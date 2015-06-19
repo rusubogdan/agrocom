@@ -30,7 +30,7 @@ public class ExceptionHandlingController {
     public ModelAndView handleError(HttpServletRequest req, Exception exception) {
         logger.error("Request: " + req.getRequestURL() + " raised " + exception);
 
-        return new ModelAndView("redirect:/505");
+        return new ModelAndView("redirect:/500");
     }
 
     @ExceptionHandler
@@ -48,6 +48,6 @@ public class ExceptionHandlingController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleExceptiond (NoHandlerFoundException ex) {
-        return new ModelAndView("redirect:/505");
+        return new ModelAndView("redirect:/500");
     }*/
 }

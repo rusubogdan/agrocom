@@ -24,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("userDetailsService")
     UserDetailsService userDetailsService;
+
     // todo set to private
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,35 +40,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                // add a few others todo delete in the future
-                    .antMatchers("/", "/resources/**", "/j_spring_security_check", "favicon.ico",
-                            "/register/**", "/sendMessage/**", "/home/**", "/home")
-                        .permitAll()
+                        // add a few others todo delete in the future
+                .antMatchers("/", "/resources/**", "/j_spring_security_check", "favicon.ico",
+                        "/register/**", "/sendMessage/**", "/home/**", "/home", "/ajax/**")
+                .permitAll()
                 .and()
-                    .authorizeRequests()
-                        .anyRequest()
+                .authorizeRequests()
+                .anyRequest()
 //                            .hasAnyRole("ADMIN", "USER", "MODERATOR")
-                            .permitAll()
+                .permitAll()
                 .and()
-                    .formLogin()
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home")
-                        .failureUrl("/login?error")
-                        .usernameParameter("j_username")
-                        .passwordParameter("j_password")
-                        .loginProcessingUrl("/j_spring_security_check")
-                            .permitAll()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/home")
+                .failureUrl("/login?error")
+                .usernameParameter("j_username")
+                .passwordParameter("j_password")
+                .loginProcessingUrl("/j_spring_security_check")
+                .permitAll()
                 .and()
-                    .logout()
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/j_spring_security_logout"))
-                        .deleteCookies("remove")
-                        .invalidateHttpSession(true)
-                        .logoutUrl("/j_spring_security_logout")
-                        .logoutSuccessUrl("/login?logout")
-                            .permitAll()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/j_spring_security_logout"))
+                .deleteCookies("remove")
+                .invalidateHttpSession(true)
+                .logoutUrl("/j_spring_security_logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
                 .and()
-                    .csrf()
-                        .disable();
+                .csrf()
+                .disable();
     }
 
     @Bean
@@ -79,13 +80,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean(name="myAuthenticationManager")
+    @Bean(name = "myAuthenticationManager")
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 }
