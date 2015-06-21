@@ -2,7 +2,7 @@ package com.agrocom.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "society")
@@ -21,13 +21,13 @@ public class Society implements Serializable {
     private User owner;
 
     @OneToMany(mappedBy = "employingSociety")
-    private List<User> employees;
+    private Set<User> employees;
 
     @OneToMany(mappedBy = "society")
-    private List<Infield> infields;
+    private Set<Infield> infields;
 
     @OneToMany(mappedBy = "society")
-    private List<Garage> garages;
+    private Set<Garage> garages;
 
     @Column(name = "society_name")
     private String name;
@@ -54,27 +54,27 @@ public class Society implements Serializable {
         this.owner = owner;
     }
 
-    public List<User> getEmployees() {
+    public Set<User> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<User> employees) {
+    public void setEmployees(Set<User> employees) {
         this.employees = employees;
     }
 
-    public List<Infield> getInfields() {
+    public Set<Infield> getInfields() {
         return infields;
     }
 
-    public void setInfields(List<Infield> infields) {
+    public void setInfields(Set<Infield> infields) {
         this.infields = infields;
     }
 
-    public List<Garage> getGarages() {
+    public Set<Garage> getGarages() {
         return garages;
     }
 
-    public void setGarages(List<Garage> garages) {
+    public void setGarages(Set<Garage> garages) {
         this.garages = garages;
     }
 
@@ -124,7 +124,7 @@ public class Society implements Serializable {
     @Override
     public int hashCode() {
         int result = societyId != null ? societyId.hashCode() : 0;
-        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+//        result = 31 * result + (owner != null ? owner.hashCode() : 0);
         result = 31 * result + (employees != null ? employees.hashCode() : 0);
         result = 31 * result + (infields != null ? infields.hashCode() : 0);
         result = 31 * result + (garages != null ? garages.hashCode() : 0);
@@ -139,9 +139,9 @@ public class Society implements Serializable {
         return "Society{" +
                 "societyId=" + societyId +
                 ", owner=" + owner +
-                ", employees=" + employees +
-                ", infields=" + infields +
-                ", garages=" + garages +
+//                ", employees=" + employees.size() +
+//                ", infields=" + infields.size() +
+//                ", garages=" + garages.size() +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
@@ -151,7 +151,7 @@ public class Society implements Serializable {
     public Society() {
     }
 
-    public Society(User owner, List<User> employees, List<Infield> infields, List<Garage> garages, String name,
+    public Society(User owner, Set<User> employees, Set<Infield> infields, Set<Garage> garages, String name,
                    String phone, String address) {
         this.owner = owner;
         this.employees = employees;

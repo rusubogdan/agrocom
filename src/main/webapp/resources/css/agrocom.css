@@ -19,7 +19,16 @@
     margin: 10px;
     background-color: #97b1ff;
     display: inline-block;
+}
 
+.add-society-holder {
+    width: 200px;
+    height: 80px;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    margin: 10px;
+    background-color: #77ff7a;
+    display: inline-block;
 }
 
 .top-side{
@@ -37,6 +46,14 @@
     float: left;
 }
 
+.add-society {
+    font-size: 50px;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+    margin: 3%;
+    position: relative;
+}
 
 /* societies selector  */
 

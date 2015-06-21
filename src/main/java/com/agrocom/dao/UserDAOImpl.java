@@ -27,10 +27,20 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public User getUser(Long userId) {
-        return (User) getCurrentSession().load(User.class, userId);
+        return (User) getCurrentSession().get(User.class, userId);
     }
 
     public User getUserByEmail(String email) {
+        List users = getCurrentSession().createCriteria(User.class)
+                .add(Restrictions.eq("email", email))
+                .setFetchMode("ownedSocieties", FetchMode.JOIN)
+                .setFetchMode("infields", FetchMode.JOIN)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
+
+        return users.size() > 0 ? (User) users.get(0) : null;
+
+/*
         List userList = new ArrayList<>();
         Query query;
 
@@ -42,10 +52,14 @@ public class UserDAOImpl implements UserDAO {
             logger.warn(e.getMessage());
         }
 
-        if (userList.size() > 0)
-            return (User) userList.get(0);
+        if (userList.size() > 0) {
+            User user = (User) userList.get(0);
+//            user.getInfields().size();
+//            user.getOwnedSocieties().size();
+            return user;
+        }
         else
-            return null;
+            return null;*/
     }
 
     public List<User> searchUserByFirstName(String firstName) {
@@ -106,11 +120,12 @@ public class UserDAOImpl implements UserDAO {
         return criteria.list().size() > 0 ? (User) criteria.list().get(0) : null;
     }
 
-    public Integer addUser(User user) {
-        Integer savedUserId = -1;
+    public Long addUser(User user) {
+        Long savedUserId = -1l;
 
         try {
-            savedUserId = (Integer) getCurrentSession().save(user);
+            savedUserId = (Long) getCurrentSession().save(user);
+            getCurrentSession().flush();
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
@@ -120,8 +135,11 @@ public class UserDAOImpl implements UserDAO {
 
     public Boolean updateUser(User user) {
         try {
+            getCurrentSession().getTransaction().begin();
             getCurrentSession().update(user);
             getCurrentSession().getTransaction().commit();
+            getCurrentSession().flush();
+
             return true;
         } catch (Exception e) {
             return false;
@@ -130,8 +148,10 @@ public class UserDAOImpl implements UserDAO {
 
     public Boolean deleteUser(User user) {
         try {
+            getCurrentSession().getTransaction().begin();
             getCurrentSession().delete(user);
             getCurrentSession().getTransaction().commit();
+            getCurrentSession().flush();
             return true;
         } catch (Exception e) {
             return false;

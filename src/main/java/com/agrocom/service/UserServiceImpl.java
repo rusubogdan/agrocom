@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.searchUserByLastName(lastName);
     }
 
-    public Integer addUser (User user) {
+    public Long addUser (User user) {
 //        user.setToken(generateRandomToken());
         // todo set encrypted password
 //        user.setPassword();
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         String subject = "Agrocom account verification";
         String htmlContent = "You are receiving this message because you tried to register to Agrocom " +
                 "using this email address. " +
-                "<br/>To confirm please click <a href=\"" + signUpConfirmUrl + user.getToken() + "\">here</a>.";
+                "<br/>To confirm please click <a href=\"http://" + signUpConfirmUrl + user.getToken() + "\">here</a>.";
         return mailService.sendMessage(toEmail, subject, htmlContent);
     }
 

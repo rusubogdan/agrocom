@@ -42,7 +42,8 @@ public class InfieldDAOImpl implements InfieldDAO {
         Long infieldId = -1l;
 
         try {
-            getCurrentSession().save(infield);
+            infieldId = (Long) getCurrentSession().save(infield);
+            getCurrentSession().flush();
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
@@ -53,6 +54,7 @@ public class InfieldDAOImpl implements InfieldDAO {
     @Override
     public Boolean updateInfield(Infield infield) {
         try {
+            getCurrentSession().getTransaction().begin();
             getCurrentSession().update(infield);
             getCurrentSession().getTransaction().commit();
             getCurrentSession().flush();
@@ -68,6 +70,7 @@ public class InfieldDAOImpl implements InfieldDAO {
     @Override
     public Boolean deleteInfield(Infield infield) {
         try {
+            getCurrentSession().getTransaction().begin();
             getCurrentSession().delete(infield);
             getCurrentSession().getTransaction().commit();
             getCurrentSession().flush();

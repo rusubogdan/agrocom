@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -103,24 +110,20 @@ public class SignUpController {
 
         Boolean success = userService.sendSignUpEmail(user);
         if (success) {
-            if (success) {
-                Integer createdUserId = userService.addUser(user);
+            Long createdUserId = userService.addUser(user);
 
-                if (createdUserId == -1) {
-                    logger.warn("User could not be created. Redirect to login error");
-                    redirectAttributes.addFlashAttribute("error", "errorCreatingUser");
+            if (createdUserId == -1l) {
+                logger.warn("User could not be created. Redirect to login error");
+                redirectAttributes.addFlashAttribute("error", "errorCreatingUser");
 
-                    return mv;
-                } else {
-                    logger.debug("User created (unconfirmed): " + user);
-                }
+                return mv;
+            } else {
+                logger.debug("User created (unconfirmed): " + user);
             }
-
-
         }
         // account confirmation via email required before login
         redirectAttributes.addFlashAttribute("success", "confirmEmail");
-        return new ModelAndView("redirect:/firstPage");
+        return new ModelAndView("redirect:/login");
     }
 
     @RequestMapping(value = "/confirm/{token}", method = RequestMethod.GET)
@@ -133,14 +136,28 @@ public class SignUpController {
 
         if (userByToken == null) {
             redirectAttributes.addAttribute("error", "invalidToken");
-            return  mv;
+            return mv;
         }
 
-        UsernamePasswordAuthenticationToken authRequest =
-                new UsernamePasswordAuthenticationToken(userByToken.getEmail(), userByToken.getPassword());
+        // confirm user account
+        userByToken.setIsConfirmed(true);
+        userService.updateUser(userByToken);
+
+        /*UsernamePasswordAuthenticationToken authRequest =
+                new UsernamePasswordAuthenticationToken(
+                        userByToken.getEmail(),
+                        *//*userByToken.getPassword()*//*"123123",
+                        getAuthorities(userByToken.getRole().getRoleId()));*/
+
+        UserDetails user =
+                new org.springframework.security.core.userdetails.User
+                        (userByToken.getEmail(),
+                        userByToken.getPassword(),
+                        getAuthorities(userByToken.getRole().getRoleId()));
 
 //        Authenticate the user
-        Authentication authentication = authenticationManager.authenticate(authRequest);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
+                user.getAuthorities());
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
 //
@@ -148,6 +165,39 @@ public class SignUpController {
         HttpSession session = request.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
-        return new ModelAndView("home");
+        return new ModelAndView("redirect:/societies");
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities(Long role) {
+        return getGrantedAuthorities(getRoles(role));
+    }
+
+    public List<String> getRoles(Long role) {
+
+        List<String> roles = new ArrayList<String>();
+
+        if (role == 1) {
+            roles.add("ROLE_MODERATOR");
+            roles.add("ROLE_ADMIN");
+            roles.add("ROLE_USER");
+        } else if (role == 2) {
+            roles.add("ROLE_MODERATOR");
+            roles.add("ROLE_USER");
+        } else if (role == 3) {
+            roles.add("ROLE_USER");
+        } else if (role == 4) {
+            roles.add("ROLE_RESTRICTED");
+        }
+
+        return roles;
+    }
+
+    public static List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+        return authorities;
     }
 }

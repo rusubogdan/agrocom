@@ -13,6 +13,7 @@ public class Garage implements Serializable {
     @Id
     @GeneratedValue(generator = "garage_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "garage_id_seq", sequenceName = "garage_id_seq", allocationSize = 1)
+    @Column(name = "garage_id")
     private Long garageId;
 
     @ManyToOne

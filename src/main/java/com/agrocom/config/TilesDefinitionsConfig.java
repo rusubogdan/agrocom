@@ -42,6 +42,18 @@ public final class TilesDefinitionsConfig implements DefinitionsFactory {
         tilesDefinitions.put(name, new Definition(name, AUTH_USER_TEMPLATE, attributes));
     }
 
+    private static void addAuthNoMenuLayoutDef(String name, String title, String body) {
+        Map<String, Attribute> attributes = new HashMap<>();
+
+        attributes.put("title", new Attribute(title));
+        attributes.put("header", new Attribute("/WEB-INF/views/template/header.jsp"));
+        attributes.put("menu", new Attribute("/WEB-INF/views/template/void.jsp"));
+        attributes.put("body", new Attribute(body));
+        attributes.put("footer", new Attribute("/WEB-INF/views/template/footer.jsp"));
+
+        tilesDefinitions.put(name, new Definition(name, AUTH_USER_TEMPLATE, attributes));
+    }
+
     private static void addAnonUserLayoutDef(String name, String title, String body) {
         Map<String, Attribute> attributes = new HashMap<>();
 
@@ -57,9 +69,10 @@ public final class TilesDefinitionsConfig implements DefinitionsFactory {
         Map<String, Attribute> attributes = new HashMap<>();
 
         attributes.put("title", new Attribute(title));
-        attributes.put("header", new Attribute("/WEB-INF/views/template/header.jsp"));
+        attributes.put("header", new Attribute("/WEB-INF/views/template/void.jsp"));
+        attributes.put("menu", new Attribute("/WEB-INF/views/template/void.jsp"));
         attributes.put("body", new Attribute(body));
-        attributes.put("footer", new Attribute("/WEB-INF/views/template/footer.jsp"));
+        attributes.put("footer", new Attribute("/WEB-INF/views/template/void.jsp"));
 
         tilesDefinitions.put(name, new Definition(name, ANON_USER_TEMPLATE, attributes));
     }
@@ -69,14 +82,16 @@ public final class TilesDefinitionsConfig implements DefinitionsFactory {
      */
     public static void addDefinitions() {
         addAuthUserLayoutDef("home", "Home", "/WEB-INF/views/home.jsp");
+        addAuthUserLayoutDef("addSociety", "Add Society", "/WEB-INF/views/addSociety.jsp");
+
+        addAuthNoMenuLayoutDef("societies", "Societies", "/WEB-INF/views/societies.jsp");
+        addAuthNoMenuLayoutDef("announcements", "announcements", "/WEB-INF/views/announcements.jsp");
 
         addAnonUserLayoutDef("firstPage", "First Page", "/WEB-INF/views/firstPage.jsp");
         addAnonUserLayoutDef("login", "Login/Register", "/WEB-INF/views/login.jsp");
         addAnonUserLayoutDef("publicPage", "public", "/WEB-INF/views/publicPage.jsp");
-        addAnonUserLayoutDef("500", "500", "/WEB-INF/views/500.jsp");
-        addAnonUserLayoutDef("404", "404", "/WEB-INF/views/404.jsp");
-        addAnonUserLayoutDef("announcements", "announcements", "/WEB-INF/views/announcements.jsp");
-//        addErrorLayoutDef("500", "500", "/WEB-INF/views/500.jsp");
-//        addErrorLayoutDef("404", "404", "/WEB-INF/views/404.jsp");
+
+        addErrorLayoutDef("500", "500", "/WEB-INF/views/500.jsp");
+        addErrorLayoutDef("404", "404", "/WEB-INF/views/404.jsp");
     }
 }

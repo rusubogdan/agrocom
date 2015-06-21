@@ -16,8 +16,8 @@ public class RoleDAOImpl implements RoleDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public Role getRole(int id) {
-        Role role = (Role) getCurrentSession().load(Role.class, id);
+    public Role getRole(Long id) {
+        Role role = (Role) getCurrentSession().get(Role.class, id);
         return role;
     }
 

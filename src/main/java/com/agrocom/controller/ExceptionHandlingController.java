@@ -30,7 +30,8 @@ public class ExceptionHandlingController {
     public ModelAndView handleError(HttpServletRequest req, Exception exception) {
         logger.error("Request: " + req.getRequestURL() + " raised " + exception);
 
-        return new ModelAndView("redirect:/500");
+//        return new ModelAndView("redirect:/home");
+        return null;
     }
 
     @ExceptionHandler

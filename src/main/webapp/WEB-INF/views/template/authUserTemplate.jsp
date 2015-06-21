@@ -59,6 +59,7 @@
 
 <%--custom scripts--%>
 <script src="<c:url value="/resources/js/home.js"/> "></script>
+<script src="<c:url value="/resources/js/societies.js"/> "></script>
 <%-------%>
 
 </body>

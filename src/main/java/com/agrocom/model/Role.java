@@ -10,11 +10,11 @@ public class Role implements Serializable {
     private static final long serialVersionUID = 42L;
 
     // ADMIN = Society administrator
-    public static final Integer ROLE_ADMIN = 1;
+    public static final Long ROLE_ADMIN = 1l;
     // MODERATOR = Society employees
-    public static final Integer ROLE_MODERATOR = 2;
+    public static final Long ROLE_MODERATOR = 2l;
     // USER = Society tenants
-    public static final Integer ROLE_USER = 3;
+    public static final Long ROLE_USER = 3l;
 
     @Id
     @GeneratedValue

@@ -3,7 +3,7 @@ package com.agrocom.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "\"user\"")
@@ -25,14 +25,14 @@ public class User implements Serializable {
     private Role role;
 
     @OneToMany(mappedBy = "owner")
-    private List<Society> ownedSocieties;
+    private Set<Society> ownedSocieties;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "society_id")
     private Society employingSociety;
 
     @OneToMany(mappedBy = "tenant")
-    private List<Infield> infields;
+    private Set<Infield> infields;
 
     @Column(name = "first_name")
     private String firstName;
@@ -83,11 +83,11 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public List<Society> getOwnedSocieties() {
+    public Set<Society> getOwnedSocieties() {
         return ownedSocieties;
     }
 
-    public void setOwnedSocieties(List<Society> ownedSocieties) {
+    public void setOwnedSocieties(Set<Society> ownedSocieties) {
         this.ownedSocieties = ownedSocieties;
     }
 
@@ -99,11 +99,11 @@ public class User implements Serializable {
         this.employingSociety = employingSociety;
     }
 
-    public List<Infield> getInfields() {
+    public Set<Infield> getInfields() {
         return infields;
     }
 
-    public void setInfields(List<Infield> infields) {
+    public void setInfields(Set<Infield> infields) {
         this.infields = infields;
     }
 
@@ -228,7 +228,7 @@ public class User implements Serializable {
     public int hashCode() {
         int result = userId != null ? userId.hashCode() : 0;
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (ownedSocieties != null ? ownedSocieties.hashCode() : 0);
+//        result = 31 * result + (ownedSocieties != null ? ownedSocieties.hashCode() : 0);
         result = 31 * result + (employingSociety != null ? employingSociety.hashCode() : 0);
         result = 31 * result + (infields != null ? infields.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
@@ -249,10 +249,10 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", role=" + role +
-                ", ownedSocieties=" + ownedSocieties +
+//                ", role=" + role.getRoleId() +
+//                ", ownedSocieties=" + ownedSocieties.size() +
                 ", employingSociety=" + employingSociety +
-                ", infields=" + infields +
+//                ", infields=" + infields.size() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", PIN='" + PIN + '\'' +
@@ -270,7 +270,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Role role, List<Society> ownedSocieties, Society employingSociety, List<Infield> infields,
+    public User(Role role, Set<Society> ownedSocieties, Society employingSociety, Set<Infield> infields,
                 String firstName, String pin, String lastName, String phone, String mobile, String email, String password,
                 Timestamp registerDate, Boolean isConfirmed, Timestamp deletedDate, String token) {
         this.role = role;

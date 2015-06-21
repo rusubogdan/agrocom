@@ -4,7 +4,9 @@ import com.agrocom.model.Garage;
 import com.agrocom.model.Infield;
 import com.agrocom.model.User;
 import com.agrocom.service.MailService;
+import com.agrocom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,19 +29,20 @@ public class HomeController {
     @Autowired
     MailService mailService;
 
-    @RequestMapping(value = "/testMail", method = RequestMethod.GET)
-    @ResponseBody
-    public Map testMailService() {
-        Boolean success = mailService.sendMessage("rusubogdan93@gmail.com", "test", "test test");
-        Map map = new HashMap<>();
-        map.put("success", success);
-
-        return map;
-    }
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView home(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("home");
+
+        if (request.getSession().getAttribute("user") == null) {
+            User loggedInUser = userService
+                    .getUserByEmail(((org.springframework.security.core.userdetails.User)
+                            SecurityContextHolder.getContext().getAuthentication()
+                                    .getPrincipal()).getUsername());
+            request.getSession().setAttribute("user", loggedInUser);
+        }
 
         // add variables for header
         mv.addObject("loggedIn", true);
