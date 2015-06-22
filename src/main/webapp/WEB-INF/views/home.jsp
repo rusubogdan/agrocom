@@ -1,5 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<script type="application/javascript">
+
+    // todo
+    <%--var selectedMenuItem = ${selectedMenuItem};--%>
+</script>
+
 <div class="page-content inset">
     <div class="row">
         <div class="col-md-12">
@@ -32,6 +38,7 @@
 
         </div>
     </div>
+
     <div class="gen-info-links">
         <div class="gen-info-links-left">
 
@@ -40,4 +47,7 @@
 
         </div>
     </div>
+</div>
+<div id="button-sample" style="display: none;">
+    <button type="button" name="ADD" value="ADD">ADD</button>
 </div>

@@ -36,6 +36,11 @@ public class UserSocietyServiceImpl implements UserSocietyService {
     }
 
     @Override
+    public List<UserSociety> getUserSocietyBySociety(Society society) {
+        return userSocietyDAO.getUserSocietyBySociety(society);
+    }
+
+    @Override
     public Long addUserSociety(UserSociety userSociety) {
         return userSocietyDAO.addUserSociety(userSociety);
     }

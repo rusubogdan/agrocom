@@ -31,7 +31,7 @@ public class UserSocietyDAOImpl implements UserSocietyDAO {
         return (UserSociety) getCurrentSession().load(UserSociety.class, id);
     }
 
-    // todo
+    // todo + getUserBySociety
     @Override
     public List<Society> getSocietiesByUser(User user) {
         Criteria criteria = getCurrentSession().createCriteria(UserSociety.class);
@@ -47,26 +47,6 @@ public class UserSocietyDAOImpl implements UserSocietyDAO {
         criteria.add(Restrictions.eq("society", society));
 
         return criteria.list().size() > 0 ? (UserSociety) criteria.list().get(0) : null;
-
-        /*
-        List userList = new ArrayList<>();
-        Query query;
-
-        try {
-            query = getCurrentSession()
-                    .createQuery("from com.agrocom.model.UserSociety u "
-                            + " where user = :user AND society = :society");
-            query.setParameter("user", user);
-            query.setParameter("society", society);
-            userList = query.list();
-        } catch (QueryException e) {
-            logger.warn(e.getMessage());
-        }
-
-        if (userList.size() > 0)
-            return (UserSociety) userList.get(0);
-        else
-            return null;*/
     }
 
     @Override
@@ -75,20 +55,14 @@ public class UserSocietyDAOImpl implements UserSocietyDAO {
         criteria.add(Restrictions.eq("user", user));
 
         return criteria.list();
-        /*
-        List userList = new ArrayList<>();
-        Query query;
+    }
 
-        try {
-            query = getCurrentSession()
-                    .createQuery("from com.agrocom.model.UserSociety u where user = :user");
-            query.setParameter("user", user);
-            userList = query.list();
-        } catch (QueryException e) {
-            logger.warn(e.getMessage());
-        }
+    @Override
+    public List<UserSociety> getUserSocietyBySociety(Society society) {
+        Criteria criteria = getCurrentSession().createCriteria(UserSociety.class);
+        criteria.add(Restrictions.eq("society", society));
 
-        return userList;*/
+        return criteria.list();
     }
 
     public Long addUserSociety (UserSociety userSociety) {

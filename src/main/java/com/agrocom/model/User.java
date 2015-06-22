@@ -67,6 +67,25 @@ public class User implements Serializable {
     @Column(name = "token")
     private String token;
 
+    public User(User other) {
+        this.userId = other.userId;
+        this.role = other.role;
+        this.ownedSocieties = other.ownedSocieties;
+        this.employingSociety = other.employingSociety;
+        this.infields = other.infields;
+        this.firstName = other.firstName;
+        this.lastName = other.lastName;
+        this.PIN = other.PIN;
+        this.phone = other.phone;
+        this.mobile = other.mobile;
+        this.email = other.email;
+        this.password = other.password;
+        this.registerDate = other.registerDate;
+        this.isConfirmed = other.isConfirmed;
+        this.deletedDate = other.deletedDate;
+        this.token = other.token;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -195,6 +214,8 @@ public class User implements Serializable {
         this.token = token;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -204,20 +225,20 @@ public class User implements Serializable {
 
         if (deletedDate != null ? !deletedDate.equals(user.deletedDate) : user.deletedDate != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (employingSociety != null ? !employingSociety.equals(user.employingSociety) : user.employingSociety != null)
-            return false;
+//        if (employingSociety != null ? !employingSociety.equals(user.employingSociety) : user.employingSociety != null)
+//            return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
         if (PIN != null ? !PIN.equals(user.PIN) : user.PIN != null) return false;
-        if (infields != null ? !infields.equals(user.infields) : user.infields != null) return false;
+//        if (infields != null ? !infields.equals(user.infields) : user.infields != null) return false;
         if (isConfirmed != null ? !isConfirmed.equals(user.isConfirmed) : user.isConfirmed != null) return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
         if (mobile != null ? !mobile.equals(user.mobile) : user.mobile != null) return false;
-        if (ownedSocieties != null ? !ownedSocieties.equals(user.ownedSocieties) : user.ownedSocieties != null)
-            return false;
+//        if (ownedSocieties != null ? !ownedSocieties.equals(user.ownedSocieties) : user.ownedSocieties != null)
+//            return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
         if (registerDate != null ? !registerDate.equals(user.registerDate) : user.registerDate != null) return false;
-        if (role != null ? !role.equals(user.role) : user.role != null) return false;
+//        if (role != null ? !role.equals(user.role) : user.role != null) return false;
         if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
         if (token != null ? !token.equals(user.token) : user.token != null) return false;
 
@@ -249,17 +270,17 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-//                ", role=" + role.getRoleId() +
-//                ", ownedSocieties=" + ownedSocieties.size() +
+                ", role=" + role +
+                ", ownedSocieties=" + ownedSocieties +
                 ", employingSociety=" + employingSociety +
-//                ", infields=" + infields.size() +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", PIN='" + PIN + '\'' +
-                ", phone='" + phone + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", infields=" + infields +
+                ", firstName='" + firstName +
+                ", lastName='" + lastName +
+                ", PIN='" + PIN +
+                ", phone='" + phone +
+                ", mobile='" + mobile +
+                ", email='" + email +
+                ", password='" + password +
                 ", registerDate=" + registerDate +
                 ", isConfirmed=" + isConfirmed +
                 ", deletedDate=" + deletedDate +

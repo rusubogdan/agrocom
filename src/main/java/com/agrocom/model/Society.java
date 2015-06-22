@@ -38,6 +38,17 @@ public class Society implements Serializable {
     @Column(name = "address")
     private String address;
 
+    public Society(Society other) {
+        this.societyId = other.societyId;
+        this.owner = other.owner;
+        this.employees = other.employees;
+        this.infields = other.infields;
+        this.garages = other.garages;
+        this.name = other.name;
+        this.phone = other.phone;
+        this.address = other.address;
+    }
+
     public Long getSocietyId() {
         return societyId;
     }
@@ -110,11 +121,11 @@ public class Society implements Serializable {
         Society society = (Society) o;
 
         if (address != null ? !address.equals(society.address) : society.address != null) return false;
-        if (employees != null ? !employees.equals(society.employees) : society.employees != null) return false;
-        if (garages != null ? !garages.equals(society.garages) : society.garages != null) return false;
-        if (infields != null ? !infields.equals(society.infields) : society.infields != null) return false;
+//        if (employees != null ? !employees.equals(society.employees) : society.employees != null) return false;
+//        if (garages != null ? !garages.equals(society.garages) : society.garages != null) return false;
+//        if (infields != null ? !infields.equals(society.infields) : society.infields != null) return false;
         if (name != null ? !name.equals(society.name) : society.name != null) return false;
-        if (owner != null ? !owner.equals(society.owner) : society.owner != null) return false;
+//        if (owner != null ? !owner.equals(society.owner) : society.owner != null) return false;
         if (phone != null ? !phone.equals(society.phone) : society.phone != null) return false;
         if (societyId != null ? !societyId.equals(society.societyId) : society.societyId != null) return false;
 
@@ -125,9 +136,9 @@ public class Society implements Serializable {
     public int hashCode() {
         int result = societyId != null ? societyId.hashCode() : 0;
 //        result = 31 * result + (owner != null ? owner.hashCode() : 0);
-        result = 31 * result + (employees != null ? employees.hashCode() : 0);
-        result = 31 * result + (infields != null ? infields.hashCode() : 0);
-        result = 31 * result + (garages != null ? garages.hashCode() : 0);
+//        result = 31 * result + (employees != null ? employees.hashCode() : 0);
+//        result = 31 * result + (infields != null ? infields.hashCode() : 0);
+//        result = 31 * result + (garages != null ? garages.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
@@ -139,12 +150,12 @@ public class Society implements Serializable {
         return "Society{" +
                 "societyId=" + societyId +
                 ", owner=" + owner +
-//                ", employees=" + employees.size() +
-//                ", infields=" + infields.size() +
-//                ", garages=" + garages.size() +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
+                ", employees=" + employees +
+                ", infields=" + infields +
+                ", garages=" + garages +
+                ", name='" + name +
+                ", phone='" + phone +
+                ", address='" + address +
                 '}';
     }
 

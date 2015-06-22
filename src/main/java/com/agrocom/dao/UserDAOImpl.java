@@ -1,7 +1,9 @@
 package com.agrocom.dao;
 
+import com.agrocom.model.Society;
 import com.agrocom.model.User;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.*;
 
 import org.hibernate.criterion.Restrictions;
@@ -26,8 +28,15 @@ public class UserDAOImpl implements UserDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public User getUser(Long userId) {
-        return (User) getCurrentSession().get(User.class, userId);
+    public User getUser(Long userId, Boolean fullData) {
+        Criteria criteria = getCurrentSession().createCriteria(User.class);
+        criteria.add(Restrictions.eq("userId", userId));
+        if (fullData) {
+            criteria.setFetchMode("ownedSocieties", FetchMode.JOIN);
+            criteria.setFetchMode("infields", FetchMode.JOIN);
+        }
+
+        return criteria.list().size() > 0 ? (User) criteria.list().get(0) : null;
     }
 
     public User getUserByEmail(String email) {
@@ -39,27 +48,6 @@ public class UserDAOImpl implements UserDAO {
                 .list();
 
         return users.size() > 0 ? (User) users.get(0) : null;
-
-/*
-        List userList = new ArrayList<>();
-        Query query;
-
-        try {
-            query = getCurrentSession().createQuery("from com.agrocom.model.User u where email = :email");
-            query.setParameter("email", email);
-            userList = query.list();
-        } catch (QueryException e) {
-            logger.warn(e.getMessage());
-        }
-
-        if (userList.size() > 0) {
-            User user = (User) userList.get(0);
-//            user.getInfields().size();
-//            user.getOwnedSocieties().size();
-            return user;
-        }
-        else
-            return null;*/
     }
 
     public List<User> searchUserByFirstName(String firstName) {
@@ -71,6 +59,15 @@ public class UserDAOImpl implements UserDAO {
     public List<User> searchUserByLastName(String lastName) {
         Criteria criteria = getCurrentSession().createCriteria(User.class);
         criteria.add(Restrictions.eq("lastName", lastName));
+        return criteria.list();
+    }
+
+    public List<User> getLandlordsBySociety(Society society) {
+        Criteria criteria = getCurrentSession().createCriteria(User.class);
+        criteria.add(Restrictions.eq("employingSociety", society));
+        // this means that the user is a landLord
+        criteria.add(Restrictions.eq("password", "---"));
+
         return criteria.list();
     }
 
@@ -91,6 +88,8 @@ public class UserDAOImpl implements UserDAO {
         else
             return null;
     }
+
+
 
     public User getUserByPin(String pin) {
         List userList = new ArrayList<>();

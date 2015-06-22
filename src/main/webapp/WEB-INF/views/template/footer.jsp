@@ -1,5 +1,5 @@
 <div class="bottom">
     <div class="container">
-        Footer
+        <%--Footer--%>
     </div>
 </div>

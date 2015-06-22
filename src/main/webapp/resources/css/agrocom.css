@@ -19,6 +19,7 @@
     margin: 10px;
     background-color: #97b1ff;
     display: inline-block;
+    cursor: hand;
 }
 
 .add-society-holder {
@@ -99,3 +100,42 @@
     /*background-color: red;*/
 }
 /* announcements holder */
+
+/* employee management */
+.view-details td {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 2px 5px !important;
+    margin: 2px 5px !important;
+}
+
+.edit-details input {
+    margin: 0.5%;
+    border: 1px solid #000000;
+    width: auto;
+    padding: 2px 5px;
+    min-width: 250px;
+}
+
+.edit-details label {
+    width: 100px;
+}
+
+#emailOrPIN {
+    width: 250px;
+    padding: 2px 5px;
+}
+
+/* employee management */
+
+/* infield management */
+.infield-fields label {
+    min-width: 250px;
+}
+
+.infield-fields input {
+    padding: 2px 5px;
+    /*margin: 1%;*/
+}
+
+/* infield management */

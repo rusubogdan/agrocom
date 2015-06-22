@@ -4,6 +4,7 @@ import com.agrocom.dao.UserDAO;
 import com.agrocom.helpers.AppUtil;
 import com.agrocom.helpers.Constants;
 import com.agrocom.model.Role;
+import com.agrocom.model.Society;
 import com.agrocom.model.User;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class UserServiceImpl implements UserService {
     @Value(value = "${account.confirm.url}")
     private String signUpConfirmUrl;
 
-    public User getUser (Long userId) {
-        return userDAO.getUser(userId);
+    public User getUser (Long userId, Boolean fullData) {
+        return userDAO.getUser(userId, fullData);
     }
 
     public User getUserByEmail (String email) {
@@ -107,6 +108,10 @@ public class UserServiceImpl implements UserService {
         user.setRole(userRole);
 
         return user;
+    }
+
+    public List<User> getLandlordsBySociety(Society society) {
+        return userDAO.getLandlordsBySociety(society);
     }
 
     public Boolean sendSignUpEmail (User user) {

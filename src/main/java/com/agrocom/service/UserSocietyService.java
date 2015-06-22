@@ -14,6 +14,8 @@ public interface UserSocietyService {
 
     List<UserSociety> getUserSocietyByUser(User user);
 
+    List<UserSociety> getUserSocietyBySociety(Society society);
+
     Long addUserSociety (UserSociety userSociety);
 
     Boolean updateUserSociety(UserSociety userSociety);

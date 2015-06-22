@@ -3,6 +3,7 @@ package com.agrocom.dao;
 import com.agrocom.model.Infield;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.FetchType;
 
 @Repository
 public class InfieldDAOImpl implements InfieldDAO {
@@ -25,8 +28,16 @@ public class InfieldDAOImpl implements InfieldDAO {
     }
 
     @Override
-    public Infield getInfield(Long infieldId) {
-        return (Infield) getCurrentSession().load(Infield.class, infieldId);
+    public Infield getInfield(Long infieldId, Boolean fullData) {
+        Criteria criteria = getCurrentSession().createCriteria(Infield.class);
+        criteria.add(Restrictions.eq("infieldId", infieldId));
+        if (fullData) {
+            criteria.setFetchMode("tenant", FetchMode.JOIN);
+            criteria.setFetchMode("society", FetchMode.JOIN);
+
+        }
+
+        return criteria.list().size() > 0 ? (Infield) criteria.list().get(0) : null;
     }
 
     @Override
@@ -34,7 +45,7 @@ public class InfieldDAOImpl implements InfieldDAO {
         Criteria criteria = getCurrentSession().createCriteria(Infield.class);
         criteria.add(Restrictions.eq("locationCode", code));
 
-        return criteria.list() != null ? (Infield) criteria.list().get(0) : null;
+        return criteria.list().size() > 0 ? (Infield) criteria.list().get(0) : null;
     }
 
     @Override
@@ -54,9 +65,11 @@ public class InfieldDAOImpl implements InfieldDAO {
     @Override
     public Boolean updateInfield(Infield infield) {
         try {
-            getCurrentSession().getTransaction().begin();
+//            if (!getCurrentSession().getTransaction().isActive()) {
+//                getCurrentSession().getTransaction().begin();
+//            }
             getCurrentSession().update(infield);
-            getCurrentSession().getTransaction().commit();
+//            getCurrentSession().getTransaction().commit();
             getCurrentSession().flush();
 
             return true;

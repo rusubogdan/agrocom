@@ -1,6 +1,6 @@
 var editor; // use a global for the submit and return data rendering in the examples
 var oTable;
-var selectedMenuItem = 'generalInfo';
+//var selectedMenuItem = 'general';
 
 $(document).ready(function () {
     home.init();
@@ -17,44 +17,79 @@ function TableSettings (table, ajaxURL, columns, preBuildColumns, columnDefs) {
 var home = {
     init: function () {
         $('#general').click(function () {
-            selectedMenuItem = 'general';
-            home.dataTable.showGeneralInfo();
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=general';
+            } else if(!window.location.href.toString().includes("/home?selectedMenuItem=general")) {
+                window.location = '/home?selectedMenuItem=general';
+            } else {
+                selectedMenuItem = 'general';
+                home.dataTable.showGeneralInfo();
+            }
         });
 
         $('#activities').click(function () {
-            selectedMenuItem = 'activities';
-            home.dataTable.createTable();
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=activities';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=activities")) {
+                window.location = '/home?selectedMenuItem=activities'
+            } else {
+                selectedMenuItem = 'activities';
+                home.dataTable.createTable();
+            }
         });
 
         $('#employees').click(function () {
-            selectedMenuItem = 'employees';
-            home.dataTable.createTable();
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=employees';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=employees")) {
+                window.location = '/home?selectedMenuItem=employees';
+            } else {
+                selectedMenuItem = 'employees';
+                home.dataTable.createTable();
+            }
         });
 
         $('#tenants').click(function () {
-            selectedMenuItem = 'tenants';
-            home.dataTable.createTable();
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=tenants';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=tenants")) {
+                window.location = '/home?selectedMenuItem=tenants';
+            } else {
+                selectedMenuItem = 'tenants';
+                home.dataTable.createTable();
+            }
         });
 
         $('#infields').click(function () {
-            selectedMenuItem = 'infields';
-            home.dataTable.createTable();
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=infields';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=infields")) {
+                window.location = '/home?selectedMenuItem=infields';
+            } else {
+                selectedMenuItem = 'infields';
+                home.dataTable.createTable();
+            }
         });
 
         $('#garages').click(function () {
-            selectedMenuItem = 'garages';
-            home.dataTable.createTable();
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=garages';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=garages")) {
+                window.location = '/home?selectedMenuItem=garages';
+            } else {
+                selectedMenuItem = 'garages';
+                home.dataTable.createTable();
+            }
         });
+
+        // manually select the menu item
+        var $2 = $('#' + selectedMenuItem + '');
+        if ($2 != undefined && $2.size() > 0)
+            $2[0].click();
+
     },
     dataTable: {
         createTable: function () {
-
-           var ajaxUrl = "/home/testMail";
-
-            $.get(ajaxUrl, function (response) {
-               console.log(response);
-            });
-
             var settings = home.dataTable.getTableSettings();
             // this also creates the table object
             var myTable = home.dataTable.createHtmlForTable(settings.preBuildColumns);
@@ -89,8 +124,29 @@ var home = {
 
             myTable.show();
 
-//            add to home
+            // delete add button
+            $('.active-button').each(function () {
+                $(this).remove();
+            });
+
+            // add add button
+            var addButton = $("#button-sample")
+                .clone()
+                .attr('id', 'add-button-' + selectedMenuItem)
+                .addClass('active-button')
+                .show()
+                .click(function () {
+                    // todo change this shit :|
+                    if (selectedMenuItem != 'activities')
+                        window.location = selectedMenuItem.substr(0, selectedMenuItem.length - 1) + '/add';
+                    else
+                        window.location = 'activity/add';
+                });
+            addButton.before(myTable);
+
+            // add to home
             $('.page-content.inset .row .col-md-12').empty().append(myTable);
+            $('.page-content.inset .row .col-md-12').append(addButton);
 
             return myTable;
 
@@ -139,21 +195,27 @@ var home = {
                     var tableName = 'employees';
                     var ajaxURL = '/home/ajax/getEmployees';
                     var columns = [
-                        {'data': 'Id'},
-                        {'data': 'FullName'},
-                        {'data': 'PIN'},
-                        {'data': 'Email'},
-                        {'data': 'Mobile'}
+                        {'data': 'userId'},
+                        {'data': 'firstName'},
+                        {'data': 'lastName'},
+                        {'data': 'pin'},
+                        {'data': 'email'},
+                        {'data': 'phone'},
+                        {'data': 'mobile'}
                     ];
                     var columnsList = [];
                     var index = 0;
-                    var column = $('<td>').html('Id');
+                    var column = $('<td>').html('id');
                     columnsList[index++] = column;
-                    column = $('<td>').html('FullName');
+                    column = $('<td>').html('First Name');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Last Name');
                     columnsList[index++] = column;
                     column = $('<td>').html('PIN');
                     columnsList[index++] = column;
                     column = $('<td>').html('Email');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Phone');
                     columnsList[index++] = column;
                     column = $('<td>').html('Mobile');
                     columnsList[index++] = column;
@@ -202,21 +264,27 @@ var home = {
                     var tableName = 'infields';
                     var ajaxURL = '/home/ajax/getInfields';
                     var columns = [
-                        {'data': 'Id'},
-                        {'data': 'Code'},
-                        {'data': 'County'},
-                        {'data': 'Village'},
-                        {'data': 'LastYear'},
-                        {'data': 'TwoYearsAgo'},
-                        {'data': 'ThreeYearsAgo'},
-                        {'data': 'FourYearsAgo'},
-                        {'data': 'FiveYearsAgo'}
+                        {'data': 'infieldId'},
+                        {'data': 'locationCode'},
+                        {'data': 'areaHa'},
+                        {'data': 'landLordFullName'},
+                        {'data': 'county'},
+                        {'data': 'village'},
+                        {'data': 'lastYear'},
+                        {'data': 'twoYearsAgo'},
+                        {'data': 'threeYearsAgo'},
+                        {'data': 'fourYearsAgo'},
+                        {'data': 'fiveYearsAgo'}
                     ];
                     var columnsList = [];
                     var index = 0;
                     var column = $('<td>').html('Id');
                     columnsList[index++] = column;
-                    column = $('<td>').html('Code');
+                    column = $('<td>').html('Location Code');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Area Ha');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Landlord name');
                     columnsList[index++] = column;
                     column = $('<td>').html('County');
                     columnsList[index++] = column;
@@ -224,13 +292,13 @@ var home = {
                     columnsList[index++] = column;
                     column = $('<td>').html('LastYear');
                     columnsList[index++] = column;
-                    column = $('<td>').html('TwoYearsAgo');
+                    column = $('<td>').html('2 Years Ago');
                     columnsList[index++] = column;
-                    column = $('<td>').html('ThreeYearsAgo');
+                    column = $('<td>').html('3 Years Ago');
                     columnsList[index++] = column;
-                    column = $('<td>').html('FourYearsAgo');
+                    column = $('<td>').html('4 Years Ago');
                     columnsList[index++] = column;
-                    column = $('<td>').html('FiveYearsAgo');
+                    column = $('<td>').html('5 Years Ago');
                     columnsList[index++] = column;
                     var columnDefs = [
                         {
@@ -275,13 +343,11 @@ var home = {
             }
         },
         showInfo: function (data) {
-            var ajaxURL = "/home/ajax/" + selectedMenuItem + '/' + data.id;
-
-            $.get(ajaxURL, function (response) {
-                console.log(response);
-            });
-
-            $('.page-content.inset .row .col-md-12').empty().append('<div>').html('success ' + selectedMenuItem);
+            if (selectedMenuItem != 'activities')
+                window.location = '/' + selectedMenuItem.substr(0, selectedMenuItem.length - 1)
+                    + '/view/' + data[getFirstFieldName(data)];
+            else
+                window.location = '/' + 'activity' + '/view/' + data[getFirstFieldName(data)];
         },
         showGeneralInfo: function () {
             var genInfoHtml = $('#gen-info-sample').clone();
@@ -292,3 +358,8 @@ var home = {
         }
     }
 };
+
+function getFirstFieldName(obj) {
+    for(var a in obj)
+        return a;
+}

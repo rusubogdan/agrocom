@@ -54,9 +54,6 @@ public class SocietyController {
             request.getSession().setAttribute("user", loggedInUser);
         }
 
-//        List<Society> societies = societyService
-//                .getSocietiesByUser((User) request.getSession().getAttribute("user"), true);
-
         List<UserSociety> userSocieties = userSocietyService
                 .getUserSocietyByUser((User) request.getSession().getAttribute("user"));
 
@@ -64,6 +61,8 @@ public class SocietyController {
                 .map(UserSociety::getSociety).collect(Collectors.toList());
 
         mv.addObject("societies", societies);
+
+        mv.addObject("selectedMenuItem", "general");
 
         return mv;
     }

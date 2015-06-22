@@ -4,7 +4,7 @@ import com.agrocom.model.Infield;
 
 public interface InfieldDAO {
 
-    Infield getInfield(Long infieldId);
+    Infield getInfield(Long infieldId, Boolean fullData);
 
     Infield getInfieldByCode(String code);
 

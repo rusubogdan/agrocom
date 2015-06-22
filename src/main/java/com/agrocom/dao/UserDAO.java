@@ -1,12 +1,13 @@
 package com.agrocom.dao;
 
+import com.agrocom.model.Society;
 import com.agrocom.model.User;
 
 import java.util.List;
 
 public interface UserDAO {
 
-    User getUser(Long userId);
+    User getUser(Long userId, Boolean fullData);
 
     User getUserByEmail(String email);
 
@@ -25,4 +26,6 @@ public interface UserDAO {
     Boolean deleteUser(User user);
 
     User getUserByPin(String pin);
+
+    List<User> getLandlordsBySociety(Society society);
 }

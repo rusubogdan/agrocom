@@ -15,8 +15,8 @@ public class InfieldServiceImpl implements InfieldService {
     private InfieldDAO infieldDAO;
 
     @Override
-    public Infield getInfield(Long infieldId) {
-        return infieldDAO.getInfield(infieldId);
+    public Infield getInfield(Long infieldId, Boolean fullData) {
+        return infieldDAO.getInfield(infieldId, fullData);
     }
 
     @Override

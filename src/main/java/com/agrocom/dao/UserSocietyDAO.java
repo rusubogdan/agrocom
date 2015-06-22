@@ -14,6 +14,8 @@ public interface UserSocietyDAO {
 
     List<UserSociety> getUserSocietyByUser(User user);
 
+    List<UserSociety> getUserSocietyBySociety(Society society);
+
     List<Society> getSocietiesByUser(User user);
 
     Long addUserSociety (UserSociety userSociety);

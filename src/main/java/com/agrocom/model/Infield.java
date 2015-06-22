@@ -1,5 +1,8 @@
 package com.agrocom.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -29,6 +32,17 @@ public class Infield implements Serializable {
     @Column(name = "county")
     private String county;
 
+    @Column(name = "area_ha")
+    private Double areaHa;
+
+    public Double getAreaHa() {
+        return areaHa;
+    }
+
+    public void setAreaHa(Double areaHa) {
+        this.areaHa = areaHa;
+    }
+
     @Column(name = "village")
     private String village;
 
@@ -46,6 +60,35 @@ public class Infield implements Serializable {
 
     @Column(name = "last_year")
     private String lastYear;
+
+    public String getLandLordFullName() {
+        return landLordFullName;
+//        return tenant == null ? "" : tenant.getFirstName() + tenant.getLastName();
+    }
+
+    public void setLandLordFullName(String landLordFullName) {
+        this.landLordFullName = landLordFullName;
+    }
+
+    @Transient
+    @JsonSerialize
+    @JsonDeserialize
+    private String landLordFullName;
+
+    public Infield(Infield other) {
+        this.infieldId = other.infieldId;
+        this.society = other.society;
+        this.tenant = other.tenant;
+        this.locationCode = other.locationCode;
+        this.areaHa = other.areaHa;
+        this.county = other.county;
+        this.village = other.village;
+        this.fiveYearsAgo = other.fiveYearsAgo;
+        this.fourYearsAgo = other.fourYearsAgo;
+        this.threeYearsAgo = other.threeYearsAgo;
+        this.twoYearsAgo = other.twoYearsAgo;
+        this.lastYear = other.lastYear;
+    }
 
     public Long getInfieldId() {
         return infieldId;
@@ -151,8 +194,8 @@ public class Infield implements Serializable {
         if (lastYear != null ? !lastYear.equals(infield.lastYear) : infield.lastYear != null) return false;
         if (locationCode != null ? !locationCode.equals(infield.locationCode) : infield.locationCode != null)
             return false;
-        if (society != null ? !society.equals(infield.society) : infield.society != null) return false;
-        if (tenant != null ? !tenant.equals(infield.tenant) : infield.tenant != null) return false;
+//        if (society != null ? !society.equals(infield.society) : infield.society != null) return false;
+//        if (tenant != null ? !tenant.equals(infield.tenant) : infield.tenant != null) return false;
         if (threeYearsAgo != null ? !threeYearsAgo.equals(infield.threeYearsAgo) : infield.threeYearsAgo != null)
             return false;
         if (twoYearsAgo != null ? !twoYearsAgo.equals(infield.twoYearsAgo) : infield.twoYearsAgo != null) return false;
@@ -164,8 +207,8 @@ public class Infield implements Serializable {
     @Override
     public int hashCode() {
         int result = infieldId != null ? infieldId.hashCode() : 0;
-        result = 31 * result + (society != null ? society.hashCode() : 0);
-        result = 31 * result + (tenant != null ? tenant.hashCode() : 0);
+//        result = 31 * result + (society != null ? society.hashCode() : 0);
+//        result = 31 * result + (tenant != null ? tenant.hashCode() : 0);
         result = 31 * result + (locationCode != null ? locationCode.hashCode() : 0);
         result = 31 * result + (county != null ? county.hashCode() : 0);
         result = 31 * result + (village != null ? village.hashCode() : 0);
@@ -183,26 +226,28 @@ public class Infield implements Serializable {
                 "infieldId=" + infieldId +
                 ", society=" + society +
                 ", tenant=" + tenant +
-                ", locationCode='" + locationCode + '\'' +
-                ", county='" + county + '\'' +
-                ", village='" + village + '\'' +
-                ", fiveYearsAgo='" + fiveYearsAgo + '\'' +
-                ", fourYearsAgo='" + fourYearsAgo + '\'' +
-                ", threeYearsAgo='" + threeYearsAgo + '\'' +
-                ", twoYearsAgo='" + twoYearsAgo + '\'' +
-                ", lastYear='" + lastYear + '\'' +
+                ", locationCode='" + locationCode +
+                ", landLordFullName='" + landLordFullName +
+                ", county='" + county +
+                ", village='" + village +
+                ", fiveYearsAgo='" + fiveYearsAgo +
+                ", fourYearsAgo='" + fourYearsAgo +
+                ", threeYearsAgo='" + threeYearsAgo +
+                ", twoYearsAgo='" + twoYearsAgo +
+                ", lastYear='" + lastYear +
                 '}';
     }
 
     public Infield() {
     }
 
-    public Infield(Society society, User tenant, String locationCode, String county, String village,
+    public Infield(Society society, User tenant, String locationCode, Double areaHa, String county, String village,
                    String fiveYearsAgo, String fourYearsAgo, String threeYearsAgo, String twoYearsAgo,
                    String lastYear) {
         this.society = society;
         this.tenant = tenant;
         this.locationCode = locationCode;
+        this.areaHa = areaHa;
         this.county = county;
         this.village = village;
         this.fiveYearsAgo = fiveYearsAgo;

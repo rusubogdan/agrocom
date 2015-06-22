@@ -46,6 +46,9 @@
     </div>
 </div>
 
+<script type="application/javascript">
+    var selectedMenuItem = '${selectedMenuItem}';
+</script>
 
 <%--API related scripts--%>
 <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>

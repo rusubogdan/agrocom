@@ -1,12 +1,13 @@
 package com.agrocom.service;
 
+import com.agrocom.model.Society;
 import com.agrocom.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    User getUser(Long userId);
+    User getUser(Long userId, Boolean fullData);
 
     User getUserByEmail(String email);
 
@@ -29,4 +30,6 @@ public interface UserService {
     User createUserWithoutSaving(String firstName, String lastName, String email, String pin, String password);
 
     Boolean sendSignUpEmail(User user);
+
+    List<User> getLandlordsBySociety(Society society);
 }
