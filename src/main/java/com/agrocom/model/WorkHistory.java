@@ -23,6 +23,10 @@ public class WorkHistory implements Serializable {
     private User worker;
 
     @ManyToOne
+    @JoinColumn(name = "society_id")
+    private Society society;
+
+    @ManyToOne
     @JoinColumn(name = "infield_id")
     private Infield infield;
 
@@ -129,6 +133,7 @@ public class WorkHistory implements Serializable {
         if (duration != null ? !duration.equals(that.duration) : that.duration != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (infield != null ? !infield.equals(that.infield) : that.infield != null) return false;
+        if (society != null ? !society.equals(that.society) : that.society != null) return false;
         if (machinery != null ? !machinery.equals(that.machinery) : that.machinery != null) return false;
         if (workHistoryId != null ? !workHistoryId.equals(that.workHistoryId) : that.workHistoryId != null)
             return false;
@@ -142,6 +147,7 @@ public class WorkHistory implements Serializable {
     public int hashCode() {
         int result = workHistoryId != null ? workHistoryId.hashCode() : 0;
         result = 31 * result + (worker != null ? worker.hashCode() : 0);
+        result = 31 * result + (society != null ? society.hashCode() : 0);
         result = 31 * result + (infield != null ? infield.hashCode() : 0);
         result = 31 * result + (machinery != null ? machinery.hashCode() : 0);
         result = 31 * result + (workType != null ? workType.hashCode() : 0);
@@ -157,6 +163,7 @@ public class WorkHistory implements Serializable {
         return "WorkHistory{" +
                 "workHistoryId=" + workHistoryId +
                 ", worker=" + worker +
+                ", society=" + society +
                 ", infield=" + infield +
                 ", machinery=" + machinery +
                 ", workType=" + workType +
@@ -170,9 +177,10 @@ public class WorkHistory implements Serializable {
     public WorkHistory() {
     }
 
-    public WorkHistory(User worker, Infield infield, Machinery machinery, WorkType workType, Timestamp date,
+    public WorkHistory(User worker, Society society, Infield infield, Machinery machinery, WorkType workType, Timestamp date,
                        String description, Integer duration, String status) {
         this.worker = worker;
+        this.society = society;
         this.infield = infield;
         this.machinery = machinery;
         this.workType = workType;
@@ -182,4 +190,11 @@ public class WorkHistory implements Serializable {
         this.status = status;
     }
 
+    public Society getSociety() {
+        return society;
+    }
+
+    public void setSociety(Society society) {
+        this.society = society;
+    }
 }

@@ -89,6 +89,10 @@ public final class TilesDefinitionsConfig implements DefinitionsFactory {
         addAuthUserLayoutDef("addInfield", "Add Infield", "/WEB-INF/views/addInfield.jsp");
         addAuthUserLayoutDef("viewInfield", "View infield", "/WEB-INF/views/viewInfield.jsp");
         addAuthUserLayoutDef("editInfield", "Edit Infield", "/WEB-INF/views/editInfieldPage.jsp");
+        addAuthUserLayoutDef("addActivity", "Add Activity", "/WEB-INF/views/addActivityPage.jsp");
+        addAuthUserLayoutDef("editActivity", "Edit Activity", "/WEB-INF/views/editActivityPage.jsp");
+        addAuthUserLayoutDef("viewActivity", "View Activity", "/WEB-INF/views/viewActivity.jsp");
+        addAuthUserLayoutDef("editJob", "Edit Job", "/WEB-INF/views/editJobPage.jsp");
 
         addAuthNoMenuLayoutDef("societies", "Societies", "/WEB-INF/views/societies.jsp");
         addAuthNoMenuLayoutDef("announcements", "announcements", "/WEB-INF/views/announcements.jsp");

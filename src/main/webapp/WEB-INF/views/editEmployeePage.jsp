@@ -17,6 +17,12 @@
             <input type="text" value="${employee.mobile}" name="mobile"/>                   <br/>
             <input type="text" value="${employee.userId}" name="userId" style="display: none;"/><br/>
 
+            <label for="role">Role: </label>
+            <select id="role" name="role">
+                <option value="1" <c:if test="${role eq 1}">checked</c:if>>Admin</option>
+                <option value="2" <c:if test="${role eq 2}">checked</c:if>>Employee</option>
+            </select>
+
             <button type="submit" value="Done">Done</button>
         </form>
     </div>

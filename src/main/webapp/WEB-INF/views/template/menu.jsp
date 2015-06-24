@@ -4,12 +4,31 @@
     <%--todo create logic dependant to user role!!!--%>
 
     <ul class="sidebar-nav" id="sidebar">
+
         <li id="general"><a href="#">General</a></li>
-        <li id="activities"><a href="#">Recent activity</a></li>
-        <%--<li id="myActivities"><a href="#">My activity</a></li>--%>
-        <li id="employees"><a href="#">Employees</a></li>
-        <li id="tenants"><a href="#">Tenants</a></li>
-        <li id="infields"><a href="#">Infields</a></li>
-        <li id="garages"><a href="#">Garages</a></li>
+        <c:if test="${role == 'admin'}">
+            <li id="activities"><a href="#">Recent activity</a></li>
+        </c:if>
+
+        <c:if test="${role == 'admin'}">
+            <li id="payments"><a href="#">Payments</a></li>
+        </c:if>
+
+        <c:if test="${role == 'employee'}">
+            <li id="jobs"><a href="#">My activity</a></li>
+        </c:if>
+
+        <c:if test="${role == 'admin'}">
+            <li id="employees"><a href="#">Employees</a></li>
+        </c:if>
+        <c:if test="${role == 'admin'}">
+            <li id="tenants"><a href="#">Landlords</a></li>
+        </c:if>
+        <c:if test="${role == 'admin'}">
+            <li id="infields"><a href="#">Infields</a></li>
+        </c:if>
+        <c:if test="${role == 'admin'}">
+            <li id="garages"><a href="#">Garages</a></li>
+        </c:if>
     </ul>
 </div>

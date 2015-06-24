@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -18,11 +20,12 @@ public class LoginController {
             @RequestParam(value = "logout", required = false) String logout,
             @RequestParam(value = "forbidden", required = false) String forbidden,
             @RequestParam(value = "register-successful", required = false) String registerSuccessful,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
         if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/societies");
         }
 
         ModelAndView mv = new ModelAndView("login");

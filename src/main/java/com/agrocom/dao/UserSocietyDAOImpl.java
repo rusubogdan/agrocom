@@ -1,5 +1,6 @@
 package com.agrocom.dao;
 
+import com.agrocom.model.Role;
 import com.agrocom.model.Society;
 import com.agrocom.model.User;
 import com.agrocom.model.UserSociety;
@@ -58,9 +59,13 @@ public class UserSocietyDAOImpl implements UserSocietyDAO {
     }
 
     @Override
-    public List<UserSociety> getUserSocietyBySociety(Society society) {
+    public List<UserSociety> getUserSocietyBySociety(Society society, Boolean isTenant, Role role) {
         Criteria criteria = getCurrentSession().createCriteria(UserSociety.class);
         criteria.add(Restrictions.eq("society", society));
+        if (isTenant) {
+            criteria.add(Restrictions.eq("role", role));
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        }
 
         return criteria.list();
     }

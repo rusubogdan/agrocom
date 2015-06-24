@@ -14,7 +14,11 @@ public interface WorkHistoryService {
 
     List<WorkHistory> getWorkHistoryByUser(User user);
 
+    List<WorkHistory> getWorkHistoryByUserAndSociety(User user, Society society);
+
     Long addWorkHistory(WorkHistory workHistory);
 
     Boolean updateWorkHistory(WorkHistory workHistory);
+
+    List<WorkHistory> getWorkHistoryByListOfUsers(long[] ids);
 }

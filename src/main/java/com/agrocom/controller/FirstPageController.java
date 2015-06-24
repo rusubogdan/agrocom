@@ -32,7 +32,8 @@ public class FirstPageController {
 
 
 
-        return mv;
+//        return mv;
+        return new ModelAndView("redirect:/login");
     }
 
     @RequestMapping(value = "/public", method = RequestMethod.GET)

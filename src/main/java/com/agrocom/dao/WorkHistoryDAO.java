@@ -17,4 +17,8 @@ public interface WorkHistoryDAO {
     Long addWorkHistory(WorkHistory workHistory);
 
     Boolean updateWorkHistory(WorkHistory workHistory);
+
+    List<WorkHistory> getWorkHistoryByUserAndSociety(User user, Society society);
+
+    List<WorkHistory> getWorkHistoryByListOfUsers(long[] ids);
 }

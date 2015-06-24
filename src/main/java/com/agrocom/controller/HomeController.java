@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -36,6 +34,15 @@ public class HomeController {
 
     @Autowired
     UserSocietyService userSocietyService;
+
+    @Autowired
+    WorkHistoryService workHistoryService;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    PaymentService paymentService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView home(HttpServletRequest request,
@@ -71,55 +78,63 @@ public class HomeController {
         return mv;
     }
 
-    @RequestMapping(value = "/ajax/activities/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public WorkHistory getActivity(@PathVariable(value = "id") String idStr) {
-        Integer id = Integer.parseInt(idStr);
-
-
-
-        return null;
-    }
-
-    @RequestMapping(value = "/ajax/tenants/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public User getTenant(@PathVariable(value = "id") String idStr) {
-        Integer id = Integer.parseInt(idStr);
-
-        User user = new User();
-        user.setFirstName("bla");
-        user.setEmail("bla@gail.com");
-        user.setPIN("1931193939234234");
-
-        return user;
-    }
-
-    @RequestMapping(value = "/ajax/garages/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public Garage getGarages(@PathVariable(value = "id") String idStr) {
-        Integer id = Integer.parseInt(idStr);
-
-        Garage garage = new Garage();
-        garage.setName("myGarage");
-
-        return garage;
-    }
-
     @RequestMapping(value = "/ajax/getActivities", method = RequestMethod.GET)
     @ResponseBody
-    public List<WorkHistory> getActivities(HttpServletRequest request) {
+    public List<WorkHistoryMin> getActivities(HttpServletRequest request) {
         Society society = (Society) request.getSession().getAttribute("society");
 
+        List<WorkHistory> activities = workHistoryService.getWorkHistoryBySociety(society);
+        List<WorkHistoryMin> activitiesMin = new ArrayList<>();
+        WorkHistoryMin activityMin = new WorkHistoryMin();
 
+        for (WorkHistory activity : activities) {
+            activityMin = new WorkHistoryMin();
+            activityMin.workHistoryId = activity.getWorkHistoryId();
+            activityMin.fullName = activity.getWorker().getFirstName() + " "
+                    + activity.getWorker().getLastName();
+            activityMin.locationCode = activity.getInfield().getLocationCode();
+            activityMin.machineryName = activity.getMachinery().getMachineryName();
+            activityMin.description = activity.getDescription();
+            activityMin.duration = activity.getDuration();
+            activityMin.status = activity.getStatus();
+            activityMin.workType = activity.getWorkType().toString();
+            activityMin.date = activity.getDate();
 
-//        List<WorkHistory> list = new ArrayList<>();
+            activitiesMin.add(activityMin);
+        }
 
+        return activitiesMin;
+    }
 
+    @RequestMapping(value = "/ajax/getJobs", method = RequestMethod.GET)
+    @ResponseBody
+    public List<WorkHistoryMin> getMyActivities(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        Society society = (Society) request.getSession().getAttribute("society");
 
-//                workHistory.Date = new SimpleDateFormat("MM/dd/yyyy")
-//                        .format(new SimpleDateFormat("MM/dd/yyyy").parse("07/" + i + "/2015"));
+        List<WorkHistory> activities =
+                workHistoryService.getWorkHistoryByUserAndSociety(user, society);
 
-        return null;
+        List<WorkHistoryMin> activitiesMin = new ArrayList<>();
+        WorkHistoryMin activityMin = new WorkHistoryMin();
+
+        for (WorkHistory activity : activities) {
+            activityMin = new WorkHistoryMin();
+            activityMin.workHistoryId = activity.getWorkHistoryId();
+            activityMin.fullName = activity.getWorker().getFirstName() + " "
+                    + activity.getWorker().getLastName();
+            activityMin.locationCode = activity.getInfield().getLocationCode();
+            activityMin.machineryName = activity.getMachinery().getMachineryName();
+            activityMin.description = activity.getDescription();
+            activityMin.duration = activity.getDuration();
+            activityMin.status = activity.getStatus();
+            activityMin.workType = activity.getWorkType().toString();
+            activityMin.date = activity.getDate();
+
+            activitiesMin.add(activityMin);
+        }
+
+        return activitiesMin;
     }
 
 
@@ -129,7 +144,9 @@ public class HomeController {
         Society society = (Society) request.getSession().getAttribute("society");
         User loggedInUser = (User) request.getSession().getAttribute("user");
 
-        List<UserSociety> userSocieties = userSocietyService.getUserSocietyBySociety(society);
+        Role role = roleService.getRole(Role.ROLE_USER);
+        List<UserSociety> userSocieties = userSocietyService
+                .getUserSocietyBySociety(society, true, role);
 
         List<User> employees = userSocieties.stream()
                 .map(UserSociety::getUser).collect(Collectors.toList());
@@ -142,12 +159,50 @@ public class HomeController {
         return emp;
     }
 
+    @RequestMapping(value = "/ajax/getPayments", method = RequestMethod.GET)
+    @ResponseBody
+    public List<PaymentMin> getPayments(HttpServletRequest request) {
+        List<PaymentMin> paymentMins = new ArrayList<>();
+        Society society = (Society) request.getSession().getAttribute("society");
+        List<Payment> payments = paymentService.getPaymentBySociety(society);
+
+        PaymentMin paymentMin = new PaymentMin();
+        for(Payment payment : payments) {
+            paymentMin = new PaymentMin();
+            paymentMin.paymentId = payment.getPaymentId();
+            paymentMin.societyId = payment.getSociety().getSocietyId();
+            paymentMin.tenantName = payment.getTenant().getFirstName() + " "
+                    + payment.getTenant().getLastName();
+            paymentMin.paymentType = payment.getPaymentType();
+            paymentMin.paymentValue = payment.getPaymentValue();
+            paymentMin.date = payment.getPaymentDate();
+
+            paymentMins.add(paymentMin);
+        }
+
+        return paymentMins;
+    }
+
+
     @RequestMapping(value = "/ajax/getTenants", method = RequestMethod.GET)
     @ResponseBody
-    public List<User> getTenants() {
+    public List<User> getTenants(HttpServletRequest request) {
         List<User> list = new ArrayList<>();
 
-        return list;
+        Society society = (Society) request.getSession().getAttribute("society");
+
+        Role role = roleService.getRole(Role.ROLE_MODERATOR);
+        List<UserSociety> userSocieties = userSocietyService
+                .getUserSocietyBySociety(society, true, role);
+
+        for(UserSociety userSociety : userSocieties) {
+            list.add(userSociety.getUser());
+        }
+
+        List<User> users = new ArrayList<>(list);
+        users = MinifyUtil.minifyUsers(users);
+
+        return users;
     }
 
     @RequestMapping(value = "/ajax/getInfields", method = RequestMethod.GET)
@@ -200,10 +255,82 @@ public class HomeController {
         return societies;
     }
 
+    @RequestMapping(value = "/ajax/getRole", method = RequestMethod.GET)
+    @ResponseBody
+    public Map getRole(HttpServletRequest request) {
+        Map map = new HashMap<>();
+
+        UserSociety userSociety = (UserSociety) request.getSession().getAttribute("userSociety");
+        Role role = userSociety.getRole();
+
+        map.put("role", role.getRoleId());
+
+        return map;
+    }
+
+    @RequestMapping(value = "/ajax/getGeneralInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public Map getGeneralInfo(HttpServletRequest request) {
+        Map map = new HashMap<>();
+
+        Society society = (Society) request.getSession().getAttribute("society");
+
+        List<Garage> garages = new ArrayList<Garage>(society.getGarages());
+        int capacity = 0;
+        for(Garage garage : garages) {
+            capacity += garage.getCapacity();
+        }
+
+        map.put("garagesCapacity", capacity);
+
+        List<Infield> infields = new ArrayList<>(society.getInfields());
+        double totalArea = 0;
+        for(Infield infield : infields) {
+            totalArea += infield.getAreaHa();
+        }
+
+        Role role = roleService.getRole(Role.ROLE_USER);
+        List<UserSociety> employees = userSocietyService
+                .getUserSocietyBySociety(society, true, role);
+
+        BigDecimal bd = new BigDecimal(totalArea).setScale(4, BigDecimal.ROUND_HALF_DOWN);
+
+        map.put("totalArea", bd);
+        map.put("address", society.getAddress());
+        map.put("societyName", society.getName());
+        map.put("owner", society.getOwner().getFirstName() + " " + society.getOwner().getLastName());
+        map.put("employeesNumber", employees.size());
+
+        return map;
+    }
+
     public class GarageMin {
         public Integer Id;
         public String Name;
         public Integer Capacity;
         public String Address;
     }
+
+    public class WorkHistoryMin implements Serializable {
+        public Long workHistoryId;
+        public String fullName;
+        public String locationCode;
+        public String machineryName;
+        public String workType;
+        public Timestamp date;
+        public String description;
+        public Integer duration;
+        public String status;
+    }
+
+    public class PaymentMin implements Serializable {
+        public Long paymentId;
+        public Long societyId;
+        public String tenantName;
+        public String paymentType;
+        public String paymentValue;
+        public Timestamp date;
+    }
+
+
 }

@@ -29,6 +29,9 @@ public class Society implements Serializable {
     @OneToMany(mappedBy = "society")
     private Set<Garage> garages;
 
+    @OneToMany(mappedBy = "society")
+    private Set<Payment> payments;
+
     @Column(name = "society_name")
     private String name;
 
@@ -44,6 +47,7 @@ public class Society implements Serializable {
         this.employees = other.employees;
         this.infields = other.infields;
         this.garages = other.garages;
+        this.payments = other.payments;
         this.name = other.name;
         this.phone = other.phone;
         this.address = other.address;
@@ -153,6 +157,7 @@ public class Society implements Serializable {
                 ", employees=" + employees +
                 ", infields=" + infields +
                 ", garages=" + garages +
+                ", payments=" + payments +
                 ", name='" + name +
                 ", phone='" + phone +
                 ", address='" + address +
@@ -162,14 +167,25 @@ public class Society implements Serializable {
     public Society() {
     }
 
-    public Society(User owner, Set<User> employees, Set<Infield> infields, Set<Garage> garages, String name,
+    public Society(User owner, Set<User> employees, Set<Infield> infields, Set<Garage> garages,
+                   Set<Payment> payments,
+                   String name,
                    String phone, String address) {
         this.owner = owner;
         this.employees = employees;
         this.infields = infields;
         this.garages = garages;
+        this.payments = payments;
         this.name = name;
         this.phone = phone;
         this.address = address;
+    }
+
+    public Set<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
     }
 }

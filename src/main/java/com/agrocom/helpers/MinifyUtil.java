@@ -1,9 +1,10 @@
 package com.agrocom.helpers;
 
-import com.agrocom.model.Infield;
-import com.agrocom.model.Society;
-import com.agrocom.model.User;
+import com.agrocom.controller.HomeController;
+import com.agrocom.model.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MinifyUtil {
@@ -29,6 +30,10 @@ public class MinifyUtil {
         return infield;
     }
 
+    public static synchronized Machinery minifyMachinery(Machinery machinery) {
+        return machinery;
+    }
+
     public static synchronized List<User> minifyUsers(List<User> users) {
         users.forEach(com.agrocom.helpers.MinifyUtil::minifyUser);
         return users;
@@ -38,4 +43,17 @@ public class MinifyUtil {
         infields.forEach(com.agrocom.helpers.MinifyUtil::minifyInfield);
         return infields;
     }
+
+    public static synchronized List<Machinery> minifyMachineries(List<Machinery> machineries) {
+        machineries.forEach(com.agrocom.helpers.MinifyUtil::minifyMachinery);
+        return machineries;
+    }
+
+    public static synchronized List<HomeController.WorkHistoryMin> getMinifiedActivities(List<WorkHistory> activities) {
+
+
+
+        return null;
+    }
+
 }

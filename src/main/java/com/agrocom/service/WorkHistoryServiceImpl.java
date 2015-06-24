@@ -33,6 +33,16 @@ public class WorkHistoryServiceImpl implements WorkHistoryService {
     }
 
     @Override
+    public List<WorkHistory> getWorkHistoryByUserAndSociety(User user, Society society) {
+        return workHistoryDAO.getWorkHistoryByUserAndSociety(user, society);
+    }
+
+    @Override
+    public List<WorkHistory> getWorkHistoryByListOfUsers(long[] ids) {
+        return workHistoryDAO.getWorkHistoryByListOfUsers(ids);
+    }
+
+    @Override
     public Long addWorkHistory(WorkHistory workHistory) {
         return workHistoryDAO.addWorkHistory(workHistory);
     }

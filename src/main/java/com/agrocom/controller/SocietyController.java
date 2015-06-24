@@ -82,6 +82,11 @@ public class SocietyController {
                 .getUserSocietyByUserAndSociety(user, society);
         request.getSession().setAttribute("userSociety", userSociety);
 
+        if (userSociety.getRole().getRoleId().equals(Role.ROLE_ADMIN))
+            request.getSession().setAttribute("role", "admin");
+        else
+            request.getSession().setAttribute("role", "employee");
+
         response.put("redirectUrl", "/home");
 
         return response;

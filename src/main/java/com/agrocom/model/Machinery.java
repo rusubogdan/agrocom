@@ -12,6 +12,7 @@ public class Machinery implements Serializable {
     @Id
     @GeneratedValue(generator = "machinery_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "machinery_id_seq", sequenceName = "machinery_id_seq", allocationSize = 1)
+    @Column(name = "machinery_id")
     private Long machineryId;
 
     @ManyToOne

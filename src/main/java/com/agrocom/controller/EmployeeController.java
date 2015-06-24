@@ -113,6 +113,14 @@ public class EmployeeController {
             return new ModelAndView("redirect:/employee/view/" + id);
         }
 
+        Society society = (Society) request.getSession().getAttribute("society");
+
+
+
+        UserSociety userSociety = userSocietyService.getUserSocietyByUserAndSociety(employee, society);
+        Long role = userSociety.getRole().getRoleId();
+        mv.addObject("role", role);
+
         employee = MinifyUtil.minifyUser(employee);
         mv.addObject("employee", employee);
 
@@ -127,8 +135,10 @@ public class EmployeeController {
                                      @RequestParam String email,
                                      @RequestParam(required = false) String phone,
                                      @RequestParam(required = false) String mobile,
+                                     @RequestParam Long role,
                                      @RequestParam Long userId,
-                                     RedirectAttributes redirectAttributes) {
+                                     RedirectAttributes redirectAttributes,
+                                     HttpServletRequest request) {
 
         User user = userService.getUser(userId, true);
 
@@ -155,6 +165,20 @@ public class EmployeeController {
         user.setMobile(mobile.equals("") ? null : mobile);
 
         userService.updateUser(user);
+
+        Society society = (Society) request.getSession().getAttribute("society");
+
+        UserSociety userSociety = userSocietyService.getUserSocietyByUserAndSociety(user, society);
+
+        Role roleInSociety;
+        if (role == 1l) {
+            roleInSociety = roleService.getRole(Role.ROLE_ADMIN);
+        } else {
+            roleInSociety = roleService.getRole(Role.ROLE_USER);
+        }
+        userSociety.setRole(roleInSociety);
+
+        userSocietyService.addUserSociety(userSociety);
 
 //        redirectAttributes.addAttribute("selectedMenuItem", "employees");
         return new ModelAndView("redirect:/employee/view/" + userId);

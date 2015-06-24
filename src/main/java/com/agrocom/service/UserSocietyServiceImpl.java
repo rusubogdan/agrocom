@@ -1,6 +1,7 @@
 package com.agrocom.service;
 
 import com.agrocom.dao.UserSocietyDAO;
+import com.agrocom.model.Role;
 import com.agrocom.model.Society;
 import com.agrocom.model.User;
 import com.agrocom.model.UserSociety;
@@ -36,8 +37,8 @@ public class UserSocietyServiceImpl implements UserSocietyService {
     }
 
     @Override
-    public List<UserSociety> getUserSocietyBySociety(Society society) {
-        return userSocietyDAO.getUserSocietyBySociety(society);
+    public List<UserSociety> getUserSocietyBySociety(Society society, Boolean isTenant, Role role) {
+        return userSocietyDAO.getUserSocietyBySociety(society, isTenant, role);
     }
 
     @Override

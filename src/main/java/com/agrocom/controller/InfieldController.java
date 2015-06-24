@@ -183,7 +183,7 @@ public class InfieldController {
         infield.setVillage(village);
         infield.setLastYear(lastYear);
         // useless
-        infield.setLandLordFullName(landLord.getFirstName() + landLord.getLastName());
+        infield.setLandLordFullName(landLord.getFirstName() + " " + landLord.getLastName());
 
         Society society = (Society) request.getSession().getAttribute("society");
         infield.setSociety(society);

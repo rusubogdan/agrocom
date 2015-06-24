@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="container">
-                <c:out value="${sessionScope.user.email}"/>
+                <%--<c:out value="${sessionScope.user.email}"/>--%>
             </div>
         </div>
     </div>
@@ -31,12 +31,12 @@
 
 <div id="gen-info-sample" class="gen-info-holder" style="display: none">
     <div class="gen-info-description">
-        <div class="gen-info-title">
-            
-        </div>
-        <div class="gen-info-logo">
-
-        </div>
+        <div id="name" style="font-size: 30px;"><span></span></div>
+        <div id="owner" style="font-size: 20px;"><span></span></div>
+        <div id="address" style="font-size: 15px;"></div>
+        <div id="employeesNumber" style="font-size: 15px;"><span></span> employees</div>
+        <div id="garagesCapacity">Total capacity of garages: <span></span> square meters </div>
+        <div id="totalArea">Total area: <span></span> hectares </div>
     </div>
 
     <div class="gen-info-links">

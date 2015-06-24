@@ -29,5 +29,12 @@
         <form action="<c:url value="/employee/edit/${employee.userId}"/>" method="get">
             <input type="submit" value="Edit">
         </form>
+        <%--<br/><br/><br/>
+        <form action="<c:url value="/employee/role/${employee.userId}"/>" method="post">
+            <input type="checkbox" value="Admin" name="role"/> Admin
+            <input type="checkbox" value="Employee" name="role"> Employee
+
+            <input type="submit" value="Edit">
+        </form>--%>
     </div>
 </div>

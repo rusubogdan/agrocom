@@ -35,6 +35,7 @@ public class WorkHistoryDAOImpl implements WorkHistoryDAO {
             criteria.setFetchMode("worker", FetchMode.JOIN);
             criteria.setFetchMode("infield", FetchMode.JOIN);
             criteria.setFetchMode("machinery", FetchMode.JOIN);
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         }
 
         return criteria.list().size() > 0 ? (WorkHistory) criteria.list().get(0) : null;
@@ -47,6 +48,7 @@ public class WorkHistoryDAOImpl implements WorkHistoryDAO {
         criteria.setFetchMode("worker", FetchMode.JOIN);
         criteria.setFetchMode("infield", FetchMode.JOIN);
         criteria.setFetchMode("machinery", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
         return criteria.list();
     }
@@ -54,12 +56,37 @@ public class WorkHistoryDAOImpl implements WorkHistoryDAO {
     @Override
     public List<WorkHistory> getWorkHistoryByUser(User user) {
         Criteria criteria = getCurrentSession().createCriteria(WorkHistory.class);
-        criteria.add(Restrictions.eq("user", user));
+        criteria.add(Restrictions.eq("worker", user));
         criteria.setFetchMode("worker", FetchMode.JOIN);
         criteria.setFetchMode("infield", FetchMode.JOIN);
         criteria.setFetchMode("machinery", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
         return criteria.list();
+    }
+
+    @Override
+    public List<WorkHistory> getWorkHistoryByUserAndSociety(User user, Society society) {
+        Criteria criteria = getCurrentSession().createCriteria(WorkHistory.class);
+        criteria.add(
+                Restrictions.and(
+                        Restrictions.eq("worker", user),
+                        Restrictions.eq("society", society)
+                ));
+        criteria.setFetchMode("worker", FetchMode.JOIN);
+        criteria.setFetchMode("society", FetchMode.JOIN);
+        criteria.setFetchMode("infield", FetchMode.JOIN);
+        criteria.setFetchMode("machinery", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<WorkHistory> getWorkHistoryByListOfUsers(long[] ids) {
+//        Criteria criteria = getCurrentSession().createCriteria(WorkHistory.class);
+//        criteria.add(Restrictions.in("worker", ids))
+        return  null;
     }
 
     @Override

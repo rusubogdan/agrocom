@@ -19,6 +19,8 @@ public interface UserDAO {
 
     List searchUserByLastName(String lastName);
 
+    
+
     Long addUser(User user);
 
     Boolean updateUser(User user);

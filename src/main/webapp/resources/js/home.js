@@ -1,6 +1,5 @@
 var editor; // use a global for the submit and return data rendering in the examples
 var oTable;
-//var selectedMenuItem = 'general';
 
 $(document).ready(function () {
     home.init();
@@ -38,6 +37,17 @@ var home = {
             }
         });
 
+        $('#payments').click(function () {
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=payments';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=payments")) {
+                window.location = '/home?selectedMenuItem=payments'
+            } else {
+                selectedMenuItem = 'payments';
+                home.dataTable.createTable();
+            }
+        });
+
         $('#employees').click(function () {
             if (!window.location.href.toString().includes("/home")) {
                 window.location = '/home?selectedMenuItem=employees';
@@ -45,6 +55,17 @@ var home = {
                 window.location = '/home?selectedMenuItem=employees';
             } else {
                 selectedMenuItem = 'employees';
+                home.dataTable.createTable();
+            }
+        });
+
+        $('#jobs').click(function () {
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=jobs';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=jobs")) {
+                window.location = '/home?selectedMenuItem=jobs';
+            } else {
+                selectedMenuItem = 'jobs';
                 home.dataTable.createTable();
             }
         });
@@ -72,6 +93,17 @@ var home = {
         });
 
         $('#garages').click(function () {
+            if (!window.location.href.toString().includes("/home")) {
+                window.location = '/home?selectedMenuItem=garages';
+            } else if (!window.location.href.toString().includes("/home?selectedMenuItem=garages")) {
+                window.location = '/home?selectedMenuItem=garages';
+            } else {
+                selectedMenuItem = 'garages';
+                home.dataTable.createTable();
+            }
+        });
+
+        $('#myActivities').click(function () {
             if (!window.location.href.toString().includes("/home")) {
                 window.location = '/home?selectedMenuItem=garages';
             } else if (!window.location.href.toString().includes("/home?selectedMenuItem=garages")) {
@@ -114,6 +146,21 @@ var home = {
             })
         },
         createHtmlForTable: function (preBuildColumns) {
+
+            var role = 1;
+
+//            $.get('/home/ajax/getRole', function (response) {
+//                role = response.role;
+//            }, false);
+
+            $.ajax({
+                url: '/home/ajax/getRole',
+                success: function (response) {
+                    role = response.role;
+                },
+                async: false
+            });
+
             var myTable = $('#example').clone();
             myTable.attr('id', selectedMenuItem + 'Table');
             var rowToAppend = myTable.find('tr');
@@ -142,11 +189,13 @@ var home = {
                     else
                         window.location = 'activity/add';
                 });
-            addButton.before(myTable);
+//            addButton.before(myTable);
 
             // add to home
             $('.page-content.inset .row .col-md-12').empty().append(myTable);
-            $('.page-content.inset .row .col-md-12').append(addButton);
+            if (role == 1) {
+                $('.page-content.inset .row .col-md-12').append(addButton);
+            }
 
             return myTable;
 
@@ -157,12 +206,15 @@ var home = {
                     var tableName = 'activities';
                     var ajaxURL = '/home/ajax/getActivities';
                     var columns = [
-                        {'data': 'Id'},
-                        {'data': 'Worker'},
-                        {'data': 'Infield'},
-                        {'data': 'Date'},
-                        {'data': 'Machinery'},
-                        {'data': 'WorkType'}
+                        {'data': 'workHistoryId'},
+                        {'data': 'fullName'},
+                        {'data': 'locationCode'},
+                        {'data': 'machineryName'},
+                        {'data': 'workType'},
+                        {'data': 'description'},
+                        {'data': 'duration'},
+                        {'data': 'status'},
+                        {'data': 'date'}
                     ];
                     var columnsList = [];
                     var index = 0;
@@ -170,13 +222,19 @@ var home = {
                     columnsList[index++] = column;
                     column = $('<td>').html('Worker');
                     columnsList[index++] = column;
-                    column = $('<td>').html('Infield');
-                    columnsList[index++] = column;
-                    column = $('<td>').html('Date');
+                    column = $('<td>').html('Location  ');
                     columnsList[index++] = column;
                     column = $('<td>').html('Machinery');
                     columnsList[index++] = column;
-                    column = $('<td>').html('WorkType');
+                    column = $('<td>').html('Work type  ');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Description');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Duration (hours)  ');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Status');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Date');
                     columnsList[index++] = column;
                     var columnDefs = [
                         {
@@ -185,8 +243,75 @@ var home = {
                             "searchable": false
                         },
                         {
-                            "type": "date",
-                            "targets": 3
+                            "targets": 8,
+                            "data": "date",
+                            "render": function (data, type, full, meta) {
+                                if(type == "display"){
+                                    var date = new Date(data);
+                                    var options = {year: "numeric", month: "numeric", day: "numeric"};
+
+                                    return date.toLocaleDateString('ro-RO', options);
+                                }
+
+                                return data;
+                            }
+                        }
+                    ];
+
+                    return new TableSettings(tableName, ajaxURL, columns, columnsList, columnDefs);
+                case 'jobs':
+                    var tableName = 'jobs';
+                    var ajaxURL = '/home/ajax/getJobs';
+                    var columns = [
+                        {'data': 'workHistoryId'},
+                        {'data': 'fullName'},
+                        {'data': 'locationCode'},
+                        {'data': 'machineryName'},
+                        {'data': 'workType'},
+                        {'data': 'description'},
+                        {'data': 'duration'},
+                        {'data': 'status'},
+                        {'data': 'date'}
+                    ];
+                    var columnsList = [];
+                    var index = 0;
+                    var column = $('<td>').html('Id');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Worker');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Location  ');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Machinery');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Work type  ');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Description');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Duration (hours)  ');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Status');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Date');
+                    columnsList[index++] = column;
+                    var columnDefs = [
+                        {
+                            "targets": [ 0 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            "targets": 8,
+                            "data": "date",
+                            "render": function (data, type, full, meta) {
+                                if(type == "display"){
+                                    var date = new Date(data);
+                                    var options = {year: "numeric", month: "numeric", day: "numeric"};
+
+                                    return date.toLocaleDateString('ro-RO', options);
+                                }
+
+                                return data;
+                            }
                         }
                     ];
 
@@ -228,26 +353,79 @@ var home = {
                     ];
 
                     return new TableSettings(tableName, ajaxURL, columns, columnsList, columnDefs);
+                case 'payments':
+                    var tableName = 'payments';
+                    var ajaxURL = '/home/ajax/getPayments';
+                    var columns = [
+                        {'data': 'paymentId'},
+                        {'data': 'societyId'},
+                        {'data': 'tenantName'},
+                        {'data': 'paymentType'},
+                        {'data': 'paymentValue'},
+                        {'data': 'date'}
+                    ];
+                    var columnsList = [];
+                    var index = 0;
+                    var column = $('<td>').html('paymentId');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('societyId');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Name');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Type');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Value');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Date');
+                    columnsList[index++] = column;
+                    var columnDefs = [
+                        {
+                            "targets": [ 0, 1 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            "targets": 5,
+                            "data": "date",
+                            "render": function (data, type, full, meta) {
+                                if(type == "display"){
+                                    var date = new Date(data);
+                                    var options = {year: "numeric", month: "numeric", day: "numeric"};
+
+                                    return date.toLocaleDateString('ro-RO', options);
+                                }
+
+                                return data;
+                            }
+                        }
+                    ];
+
+                    return new TableSettings(tableName, ajaxURL, columns, columnsList, columnDefs);
                 case 'tenants':
                     var tableName = 'tenants';
                     var ajaxURL = '/home/ajax/getTenants';
                     var columns = [
-                        {'data': 'Id'},
-                        {'data': 'FullName'},
-                        {'data': 'PIN'},
-                        {'data': 'Email'},
-                        {'data': 'Mobile'}
+                        {'data': 'userId'},
+                        {'data': 'firstName'},
+                        {'data': 'lastName'},
+                        {'data': 'pin'},
+                        {'data': 'email'},
+                        {'data': 'phone'},
+                        {'data': 'mobile'}
                     ];
                     var columnsList = [];
                     var index = 0;
-                    var column = $('<td>').html('Id');
+                    var column = $('<td>').html('id');
                     columnsList[index++] = column;
-                    column = $('<td>').html('FullName');
+                    column = $('<td>').html('First Name');
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Last Name');
                     columnsList[index++] = column;
                     column = $('<td>').html('PIN');
                     columnsList[index++] = column;
                     column = $('<td>').html('Email');
-
+                    columnsList[index++] = column;
+                    column = $('<td>').html('Phone');
                     columnsList[index++] = column;
                     column = $('<td>').html('Mobile');
                     columnsList[index++] = column;
@@ -353,7 +531,20 @@ var home = {
             var genInfoHtml = $('#gen-info-sample').clone();
             genInfoHtml.attr('id', 'gen-info').show();
 
+            $.ajax({
+                url: '/home/ajax/getGeneralInfo',
+                success: function (response) {
+                    genInfoHtml.find('#name').html(response.societyName);
+                    genInfoHtml.find('#owner').html(response.owner);
+                    genInfoHtml.find('#address').html(response.address);
+                    genInfoHtml.find('#employeesNumber span').html(response.employeesNumber);
+                    genInfoHtml.find('#garagesCapacity span').html(response.garagesCapacity);
+                    genInfoHtml.find('#totalArea span').html(response.totalArea);
+                },
+                async: false
+            });
 
+            $('.row .col-md-12 .container').append(genInfoHtml);
 
         }
     }
